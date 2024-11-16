@@ -6,8 +6,10 @@ function Home() {
       const navigate = useNavigate();
 
        const nav1 = ()=>{
-        navigate('/register')
+        navigate('/login')
        }
+
+       
 
   return (
     <>
