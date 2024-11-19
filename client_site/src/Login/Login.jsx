@@ -1,18 +1,49 @@
+import axios from "axios";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginImg from "../image/Sign up-bro.png";
 
 function Login() {
   const navigate = useNavigate();
+  const [data, setData] = useState({
+    email: "",
+    password: ""
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
 
   const nav1 = () => {
-    navigate("/login");
+    navigate("/");
   };
-  const nav2=()=>{
-    navigate("/register")
-  }
-  const HomeNav = ()=>{
-    navigate("/")
- }
+
+  const nav2 = () => {
+    navigate("/register");
+  };
+
+  const HomeNav = () => {
+    navigate("/");
+  };
+
+  const login = async () => {
+    try {
+      const response = await axios.post("http://localhost:3000/api/login", data);
+      console.log(response.data);
+      if (response.data.success) {
+        alert('Login successful!');
+        setData({ email: "", password: "" });
+        nav1(); // Navigate to home or another page after successful login
+      }
+    } catch (error) {
+      console.log('Error during login:', error);
+      alert('Login failed.');
+    }
+  };
 
   return (
     <>
@@ -36,39 +67,37 @@ function Login() {
         <div className="flex ml-5">
           <img src={loginImg} alt="Album" className="mt-3 ml-36 w-96 h-96 " />
 
-          <div className="text-black text-center pt-14 pl-36 space-y-4   ">
+          <div className="text-black text-center pt-14 pl-36 space-y-4">
             <div className="flex flex-col justify-center space-y-6 bg-slate-100 py-12 px-10 w-96 rounded-md">
-              {/* <input
-                type="text"
-                placeholder="Enter your name"
-                className="input input-bordered input-success w-full max-w-xs bg-white"
-              /> */}
-
               <input
+                onChange={handleChange}
                 type="email"
+                name="email"
+                value={data.email}
                 placeholder="Enter your email"
                 className="input input-bordered input-success w-full max-w-xs bg-white"
               />
 
               <input
+                onChange={handleChange}
                 type="password"
+                name="password"
+                value={data.password}
                 placeholder="password"
                 className="input input-bordered input-success w-full max-w-xs bg-white"
               />
 
               <p>
-                does not have any account yett!     <span onClick={nav2} className="text-green-600 underline cursor-pointer">
-                   register
+                Do not have any account yet! <span onClick={nav2} className="text-green-600 underline cursor-pointer">
+                  Register
                 </span>
               </p>
-              <div className="flex justify-center space-x-7 ">
-              
-              
-               <button onClick={nav2} className="btn btn-outline btn-success w-32 py-0  ">
+              <div className="flex justify-center space-x-7">
+                <button onClick={nav2} className="btn btn-outline btn-success w-32 py-0">
                   Register
                 </button>
-                
-                <button className="btn btn-outline btn-success w-32 py-0  ">
+
+                <button onClick={login} className="btn btn-outline btn-success w-32 py-0">
                   Login
                 </button>
               </div>
