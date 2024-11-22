@@ -17,7 +17,7 @@ import mongoose from "mongoose";
           required:true,
           min:[6,' at least 6 digits required']
      }
-})
+},{timestamps:true})
 
 const  userSchema = mongoose.model('users',user);
 export default userSchema;

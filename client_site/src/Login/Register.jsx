@@ -11,13 +11,13 @@ function Register() {
     password: ""
   });
 
-  const HomeNav = () => {
-    navigate("/");
-  };
   const nav1 = () => {
     navigate("/login");
   };
-
+  const HomeNav = ()=>{
+    navigate("/")
+  }
+   
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prevState) => ({
@@ -45,18 +45,15 @@ function Register() {
       <div className="h-screen w-screen bg-slate-200">
         <div className="flex justify-start pl-28 pt-3 space-x-96 bg-slate-100 pb-2 shadow-md">
           <h1 className="font-semibold text-2xl pb-2 text-black">Medcare</h1>
-          <ul className="flex justify-end pl-20 space-x-6 text-black ">
-            <li onClick={HomeNav} className="cursor-pointer">
-              Home
-            </li>
-            <li className="cursor-pointer">Services</li>
-            <li className="cursor-pointer">About</li>
-            <li className="cursor-pointer">Doctors</li>
-            <li className="cursor-pointer">Review</li>
-            <li onClick={nav1} className="cursor-pointer">
-              Reg/Login
-            </li>
-          </ul>
+            <ul className="flex justify-end pl-48 space-x-6 text-black ">
+              <li onClick={HomeNav} className="cursor-pointer">
+                Home
+              </li>
+              <li className="cursor-pointer">Services</li>
+              <li className="cursor-pointer">About</li>
+              <li className="cursor-pointer">Doctors</li>
+              <li className="cursor-pointer">Review</li>
+            </ul>
         </div>
 
         {/* Title and content section */}

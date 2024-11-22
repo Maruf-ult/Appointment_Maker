@@ -14,7 +14,7 @@ function Routtes() {
                    <Route path='/' element={<Home></Home>}></Route>
                    <Route path='/login' element={<Login></Login>}></Route>
                    <Route path="/reg" element={<Register></Register>}/>
-                   <Route path="/user" element={<ForClients></ForClients>}/>
+                   <Route path="/home" element={<ForClients></ForClients>}/>
                    <Route path="/doc" element={<ForDoctors></ForDoctors>}/>
              </Routes>
          </Router>
