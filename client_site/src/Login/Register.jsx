@@ -2,8 +2,10 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginImg from "../image/Sign up-bro.png";
+import { useDispatch } from "react-redux";
 
 function Register() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [data, setData] = useState({
     name: "",
@@ -28,12 +30,15 @@ function Register() {
 
   const register = async () => {
     try {
+      dispatch(showLoading()); 
       const response = await axios.post("http://localhost:3000/api/reg", data);
+      dispatch(hideLoading());
       console.log(response.data);
       alert('Registration successful!');
       setData({ name: "", email: "", password: "" });
          nav1(); // Clear the form after successful registration
     } catch (error) {
+      dispatch(hideLoading());
       console.log('Error during registration:', error);
       alert('Registration failed.');
     }

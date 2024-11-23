@@ -2,8 +2,13 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginImg from "../image/Sign up-bro.png";
+import { useSelector,useDispatch } from "react-redux";
 
 function Login() {
+  
+  const dispatch = useDispatch();
+
+
   const navigate = useNavigate();
   const [data, setData] = useState({
     email: "",
@@ -32,7 +37,9 @@ function Login() {
 
   const login = async () => {
     try {
+      dispatch(showLoading());
       const response = await axios.post("http://localhost:3000/api/login", data);
+      dispatch(hideLoading());
       console.log(response.data);
       if (response.data.success) {
         localStorage.setItem('token',response.data.jwtToken)
@@ -41,6 +48,7 @@ function Login() {
         nav1(); // Navigate to home or another page after successful login
       }
     } catch (error) {
+      dispatch(hideLoading());
       console.log('Error during login:', error);
       alert('Login failed.');
     }
