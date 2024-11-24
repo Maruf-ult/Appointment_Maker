@@ -9,7 +9,10 @@ function Home() {
   const nav1 = () => {
     navigate("/login");
   };
-
+  
+  const nav2 = ()=>{
+    navigate("/reg")
+  };
   
 
 
@@ -35,19 +38,24 @@ function Home() {
         <div className="flex ml-5">
           <img src={docImg} alt="Album" className="mt-2 ml-36 w-96 h-96" />
 
-          <div className="text-black text-center pt-36 pl-36 space-y-4">
-            <h1 className="font-bold text-4xl "> Stay Safe, Stay Healthy</h1>
+          <div className="text-black text-center pt-36 pl-36 space-y-5 ">
+            <h1 className="font-bold text-4xl ml-2"> Stay Safe, Stay Healthy</h1>
 
-            <p className="w-96 mx-auto text-center">
+            <p className="w-96 mx-auto text-center justify-start ">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo,
               ipsa repellat eius, fuga esse deleniti quidem commodi blanditiis
               adipisci asdfdfdsf adsfadf asdss
             </p>
 
             {/* Button below the paragraph, aligned with the text */}
-            <button className="btn btn-outline btn-success  mr-60 px-8  ">
+            <div className="flex space-x-3 ml-3 ">
+            <button className="btn btn-outline btn-success   px-8  ">
               Contact Us
             </button>
+            <button onClick={nav2} className="btn btn-outline btn-success   px-6  ">
+              register now!
+            </button>
+            </div>
           </div>
         </div>
       </div>
