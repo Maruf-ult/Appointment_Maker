@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
+import  { useEffect, useCallback } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faCalendarCheck, faUserDoctor, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-function ForDoctors() {
+function ForClients() {
+  const { user } = useSelector((state) => state.user);
+
   const userMenu = [
     {
       name: 'Home',
@@ -30,10 +33,12 @@ function ForDoctors() {
 
   const menuToBeRendered = userMenu;
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
-      if (!token) { throw new Error('No token found'); }
+      if (!token) {
+        throw new Error('No token found');
+      }
       const response = await axios.post(
         "http://localhost:3000/api/get-userid",
         {},
@@ -47,11 +52,11 @@ function ForDoctors() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [user, getData]);
 
   return (
     <>
@@ -75,7 +80,8 @@ function ForDoctors() {
 
         <div className="bg-slate-300 w-screen ml-5 mt-1 rounded-md mr-4">
           <div className="flex bg-slate-500 p-5 rounded-md justify-end text-white font-bold m-3">
-            User
+             {user ? user.name : 'Guest'}
+             
           </div>
           <div className="bg-slate-50 mr-3 ml-3 mt-5 h-[78vh] rounded-md">
             mamfadsf
@@ -86,4 +92,4 @@ function ForDoctors() {
   );
 }
 
-export default ForDoctors;
+export default ForClients;

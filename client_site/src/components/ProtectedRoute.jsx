@@ -1,12 +1,48 @@
-
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios'
+import { setUser } from '../Redux/userSlice.jsx';
+import { showLoading, hideLoading } from '../Redux/AlertSlice.jsx';
 
 function ProtectedRoute(props) {
-  if(localStorage.getItem("token")){
-      return props.children;
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const getUser = useCallback(async () => {
+    try {
+      dispatch(showLoading());
+      const response = await axios.post('http://localhost:3000/api/get-userid', { token: localStorage.getItem('token') }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+      });
+      dispatch(hideLoading());
+      console.log(response.data.success);
+      if (response.data.success) {
+        dispatch(setUser(response.data.data));
+      } else {
+        navigate('/login');
+      }
+    } catch (error) {
+      console.log(error);
+      dispatch(hideLoading());
+      navigate('/login');
+    }
+  }, [dispatch, navigate]);
+
+  useEffect(() => {
+    if (!user) {
+      getUser();
+    }
+  }, [user, getUser]);
+
+  if (localStorage.getItem("token")) {
+    return props.children;
   } else {
-       return <Navigate to="/"/>;
+    return <Navigate to="/login" />;
   }
 }
 
