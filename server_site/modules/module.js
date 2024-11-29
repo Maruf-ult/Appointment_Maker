@@ -56,10 +56,12 @@ export const singup = async (req, res) => {
     }
   };
 
+  
+
 export const userInfo = async (req, res) => {
   try {
-    console.log("Received userId:", req.body.userId);
     const user = await userSchema.findOne({ _id: req.body.userId });
+    user.password=undefined;
     if (!user) {
       return res
         .status(200)
@@ -67,10 +69,7 @@ export const userInfo = async (req, res) => {
     } else {
       res.status(200).json({
         success: true,
-        data: {
-          name: user.name,
-          email: user.email,
-        },
+        data:user,
       });
     }
   } catch (error) {
