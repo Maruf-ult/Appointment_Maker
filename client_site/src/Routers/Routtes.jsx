@@ -8,6 +8,7 @@ import ForClients from "../components/ForClients.jsx";
 import ForDoctors from "../components/ForDoctors.jsx";
 import ProtectedRoute from "../components/ProtectedRoute.jsx";
 import PublicRoute from "../components/PublicRoute.jsx";
+import ApplyDoc from "../components/ApplyDoc.jsx";
 
 function Routtes() {
   const { loading } = useSelector((state) => state.alerts);
@@ -25,7 +26,8 @@ function Routtes() {
           <Route path="/login" element={<PublicRoute><Login/></PublicRoute>}></Route>
           <Route path="/reg" element={<PublicRoute><Register/></PublicRoute>} />
           <Route path="/home" element={<ProtectedRoute><ForClients/></ProtectedRoute>} />
-          <Route path="/doc" element={<ForDoctors></ForDoctors>} />
+          <Route path="/doc" element={<ProtectedRoute><ForDoctors/></ProtectedRoute>} />
+          <Route path="/apply-doc" element={<ProtectedRoute> <ApplyDoc/> </ProtectedRoute>   }/>
         </Routes>
       </Router>
     </>

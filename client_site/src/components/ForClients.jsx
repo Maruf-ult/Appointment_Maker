@@ -4,9 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faUserDoctor, faCalendarCheck, faStethoscope, faSignOutAlt, faUsers, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import PropTypes from 'prop-types'; 
 import { setUser } from "../Redux/userSlice"; 
 
-function ForAdmin() {
+function ForClients({ children }) {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -92,7 +93,7 @@ function ForAdmin() {
             <p className="hover:text-green-400">{user ? user.name : 'Guest'}</p>
           </div>
           <div className="bg-slate-50 mr-3 ml-3 mt-5 h-[78vh] rounded-md">
-            <p>mamfadsf</p>
+            {children}
           </div>
         </div>
       </div>
@@ -100,4 +101,8 @@ function ForAdmin() {
   );
 }
 
-export default ForAdmin;
+ForClients.propTypes = {
+  children: PropTypes.node.isRequired
+};
+
+export default ForClients;
