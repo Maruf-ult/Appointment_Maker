@@ -29,7 +29,7 @@ function Home() {
             <li className="cursor-pointer">Doctors</li>
             <li className="cursor-pointer">Review</li>
             <li onClick={nav1} className="cursor-pointer">
-              Reg/Login
+              Join as client
             </li>
           </ul>
         </div>

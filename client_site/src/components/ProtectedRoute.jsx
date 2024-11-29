@@ -24,11 +24,13 @@ function ProtectedRoute(props) {
       if (response.data.success) {
         dispatch(setUser(response.data.data));
       } else {
+        localStorage.clear();
         navigate('/login');
       }
     } catch (error) {
       console.log(error);
       dispatch(hideLoading());
+      localStorage.clear();
       navigate('/login');
     }
   }, [dispatch, navigate]);

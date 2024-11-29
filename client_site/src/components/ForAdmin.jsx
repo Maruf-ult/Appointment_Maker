@@ -1,37 +1,71 @@
 import  { useEffect, useCallback } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse, faUserDoctor, faCalendarCheck, faStethoscope, faSignOutAlt, faUsers, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faHouse, faUserDoctor,faCalendarCheck, faStethoscope, faSignOutAlt, faUsers,faUser } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { setUser } from "../Redux/userSlice"; 
+import { useSelector } from "react-redux";
 
 function ForAdmin() {
   const { user } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const userMenu = [
-    { name: 'Home', link: '/', icon: faHouse },
-    { name: 'Appointments', path: '/appointments', icon: faCalendarCheck },
-    { name: 'Apply Doctor', link: '/apply-doctor', icon: faUserDoctor },
-    { name: 'Profile', path: '/profile', icon: faUser }
-  ];
+     {
+       name: 'Home',
+       link: '/',
+       icon: faHouse
+     },
+     {
+       name: 'Appointments',
+       path: '/appointments',
+       icon: faCalendarCheck
+     },
+     {
+       name: 'Apply Doctor',
+       link: '/apply-doctor',
+       icon: faUserDoctor
+     },
+     {
+       name: 'Profile',
+       path: '/profile',
+       icon: faUser
+     }
+   ];
+
+
+
+
 
   const adminMenu = [
-    { name: 'Home', link: '/', icon: faHouse },
-    { name: 'Doctors', path: '/doctors', icon: faStethoscope },
-    { name: 'Users', path: '/users', icon: faUsers },
-    { name: 'Profile', link: '/profile', icon: faUserDoctor }
+    {
+      name: 'Home',
+      link: '/',
+      icon: faHouse
+    },
+    {
+      name: "Doctors",
+      path: "/doctors",
+      icon: faStethoscope
+    },
+    {
+      name: 'Users',
+      path: '/users',
+      icon: faUsers
+    },
+    {
+      name: 'Profile',
+      link: '/profile',
+      icon: faUserDoctor
+    },
   ];
 
-  const menuToBeRendered = user?.isAdmin ? adminMenu : userMenu;
+  const menuToBeRendered = user?.isAdmin?adminMenu:userMenu;
 
   const getData = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
-      if (!token) throw new Error('No token found');
-
+      if (!token) {
+        throw new Error('No token found');
+      }
       const response = await axios.post(
         "http://localhost:3000/api/get-userid",
         {},
@@ -41,28 +75,21 @@ function ForAdmin() {
           },
         }
       );
-
-      if (response.data.success) {
-        dispatch(setUser(response.data.data)); 
-      } else {
-        localStorage.removeItem('token');
-        navigate('/login');
-      }
+      console.log(response.data);
     } catch (error) {
       console.log(error);
-      localStorage.removeItem('token');
-      navigate('/login');
     }
-  }, [dispatch, navigate]);
+  }, []);
 
   useEffect(() => {
     getData();
-  }, [getData]); 
+  }, [user, getData]);
 
-  const logOut = () => {
-    localStorage.clear();
-    navigate('/login');
-  };
+
+  const logOut = ()=>{
+     localStorage.clear();
+     navigate('/login')
+  }
 
   return (
     <>
@@ -72,7 +99,7 @@ function ForAdmin() {
             <h1 className="text-3xl font-bold ml-3 mt-2 text-black">
               SH <br /> <span className="text-2xl font-normal">User</span>
             </h1>
-            <ul className="space-y-8 ml-5 text-white">
+            <ul className="space-y-8 ml-2 text-white">
               {menuToBeRendered.map((item, index) => (
                 <li key={index} className="font-bold">
                   <Link to={item.link || item.path} className="cursor-pointer hover:text-green-400 flex items-center">
@@ -80,7 +107,7 @@ function ForAdmin() {
                   </Link>
                 </li>
               ))}
-              <li className="font-bold cursor-pointer hover:text-green-400" onClick={logOut}>
+             <li className="font-bold cursor-pointer   hover:text-green-400" onClick={logOut}>
                 <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" /> Logout
               </li>
             </ul>
