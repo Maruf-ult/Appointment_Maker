@@ -41,13 +41,13 @@ const docSchema = new mongoose.Schema({
           type:Number,
           required:true,
      },
-     fromTime:{
-          type:String,
-          required:true,
+     timings:{
+          type:Array,
+          required:true
      },
-     toTime:{
+     status:{
           type:String,
-          required:true,
+          default:"pending",
      }
 
 

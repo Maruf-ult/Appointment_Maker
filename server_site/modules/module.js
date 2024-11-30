@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import userSchema from "../usermodel/userSchema.js";
-
+import doctorModel from "../usermodel/doctorSchema.js";
 export const singup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -76,5 +76,45 @@ export const userInfo = async (req, res) => {
     return res
       .status(500)
       .json({ msg: "Error getting user info ", success: false, error });
+  }
+};
+
+
+export const applyDoc = async (req, res) => {
+  try {
+    // console.log('Request body:', req.body); 
+
+ 
+    const newDoctor = new doctorModel({ ...req.body, status: "pending" });
+
+  
+    await newDoctor.save();
+
+ 
+    const adminUser = await userSchema.findOne({ isAdmin: true });
+    if (!adminUser) {
+      throw new Error('Admin user not found');
+    }
+
+    const unseenNotification = adminUser.unseenNotifications;
+    unseenNotification.push({
+      type: "new-doctor-request",
+      message: `${newDoctor.firstName} ${newDoctor.lastName} has applied for a doctor account`,
+      data: {
+        doctorId: newDoctor._id,
+        name: newDoctor.firstName + " " + newDoctor.lastName,
+      },
+      onclickPath: "/admin/doctors",
+    });
+
+   
+    await userSchema.findOneAndUpdate({ _id: adminUser._id }, { unseenNotification });
+
+    // console.log('Doctor applied successfully:', newDoctor); 
+
+    return res.status(201).json({ msg: "Doctor account applied successfully", success: true });
+  } catch (error) {
+    console.error('Error during doctor application:', error); 
+    return res.status(500).json({ msg: `An internal error occurred: ${error.message}` });
   }
 };
