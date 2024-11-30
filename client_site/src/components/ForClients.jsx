@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from 'prop-types'; 
 import { setUser } from "../Redux/userSlice"; 
+import { Badge } from "antd";
 
 function ForClients({ children }) {
   const { user } = useSelector((state) => state.user);
@@ -15,7 +16,7 @@ function ForClients({ children }) {
   const userMenu = [
     { name: 'Home', link: '/', icon: faHouse },
     { name: 'Appointments', path: '/appointments', icon: faCalendarCheck },
-    { name: 'Apply Doctor', link: '/apply-doctor', icon: faUserDoctor },
+    { name: 'Apply Doctor', link: '/apply-doc', icon: faUserDoctor },
     { name: 'Profile', path: '/profile', icon: faUser }
   ];
 
@@ -65,6 +66,10 @@ function ForClients({ children }) {
     navigate('/login');
   };
 
+  if (!user) {
+    return <div>Loading...</div>; 
+  }
+
   return (
     <>
       <div className="h-screen w-screen bg-slate-300 flex">
@@ -90,10 +95,13 @@ function ForClients({ children }) {
 
         <div className="bg-slate-300 w-screen ml-5 mt-1 rounded-md mr-4">
           <div className="flex bg-slate-500 p-5 rounded-md justify-end text-white font-bold m-3 cursor-pointer">
-            <p className="hover:text-green-400">{user ? user.name : 'Guest'}</p>
+            <Badge className="mr-3 " count={user?.unseenNotifications?.length || 0} showZero>
+              <FontAwesomeIcon icon={faUser} className="mr-2 mt-1 size-5"   />
+            </Badge>
+            <p className="hover:text-green-400">{user.name || 'Guest'}</p>
           </div>
           <div className="bg-slate-50 mr-3 ml-3 mt-5 h-[78vh] rounded-md">
-            {children}
+            {children || <div>No content available</div>}
           </div>
         </div>
       </div>
@@ -102,7 +110,7 @@ function ForClients({ children }) {
 }
 
 ForClients.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node
 };
 
 export default ForClients;
