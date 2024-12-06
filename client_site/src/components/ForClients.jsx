@@ -13,6 +13,11 @@ function ForClients({ children }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+
+  const nav1 = ()=>{
+    navigate('/notifications')
+  }
+
   const userMenu = [
     { name: 'Home', link: '/', icon: faHouse },
     { name: 'Appointments', path: '/appointments', icon: faCalendarCheck },
@@ -22,7 +27,7 @@ function ForClients({ children }) {
 
   const adminMenu = [
     { name: 'Home', link: '/', icon: faHouse },
-    { name: 'Doctors', path: '/doctors', icon: faStethoscope },
+    { name: 'Doctors', path: '/admin/doctors', icon: faStethoscope },
     { name: 'Users', path: '/users', icon: faUsers },
     { name: 'Profile', link: '/profile', icon: faUserDoctor }
   ];
@@ -94,8 +99,8 @@ function ForClients({ children }) {
         </div>
 
         <div className="bg-slate-300 w-screen ml-5 mt-1 rounded-md mr-4">
-          <div className="flex bg-slate-500 p-5 rounded-md justify-end text-white font-bold m-3 cursor-pointer">
-            <Badge className="mr-3 " count={user?.unseenNotifications?.length || 0} showZero>
+          <div  className="flex bg-slate-500 p-5 rounded-md justify-end text-white font-bold m-3 cursor-pointer">
+            <Badge onClick={nav1} className="mr-3 " count={user?.unseenNotifications?.length || 0} showZero>
               <FontAwesomeIcon icon={faUser} className="mr-2 mt-1 size-5"   />
             </Badge>
             <p className="hover:text-green-400">{user.name || 'Guest'}</p>

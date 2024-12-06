@@ -8,6 +8,8 @@ import ForClients from "./ForClients.jsx";
 import { TimePicker } from 'antd';
 import dayjs from 'dayjs';
 
+
+
 function ApplyDoc() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
@@ -24,6 +26,8 @@ function ApplyDoc() {
     feePerConsultation: "",
     timings: [],
   });
+
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -177,7 +181,7 @@ function ApplyDoc() {
         <div className="flex space-x-12 pl-16 pt-2">
           <div className="space-y-2">
             <h3 className="text-black ">*Timings</h3>
-            <TimePicker.RangePicker
+            <TimePicker.RangePicker 
               className="border border-black py-1 font-light"
               value={formValues.timings.length ? [dayjs(formValues.timings[0], 'HH:mm'), dayjs(formValues.timings[1], 'HH:mm')] : null}
               onChange={handleTimingsChange}
@@ -185,10 +189,10 @@ function ApplyDoc() {
           </div>
         </div>
 
-        <div className="flex justify-end pr-20 pt-4">
+        <div className="flex justify-end pr-20 mb-2 ">
           <button
             type="submit"
-            className="px-8 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="px-8 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 "
           >
             Apply
           </button>

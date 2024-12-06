@@ -9,6 +9,7 @@ import ForDoctors from "../components/ForDoctors.jsx";
 import ProtectedRoute from "../components/ProtectedRoute.jsx";
 import PublicRoute from "../components/PublicRoute.jsx";
 import ApplyDoc from "../components/ApplyDoc.jsx";
+import Navigate from "../components/Navigate.jsx";
 
 function Routtes() {
   const { loading } = useSelector((state) => state.alerts);
@@ -28,6 +29,7 @@ function Routtes() {
           <Route path="/home" element={<ProtectedRoute><ForClients/></ProtectedRoute>} />
           <Route path="/doc" element={<ProtectedRoute><ForDoctors/></ProtectedRoute>} />
           <Route path="/apply-doc" element={<ProtectedRoute> <ApplyDoc/> </ProtectedRoute>   }/>
+          <Route path="/notifications" element={<ProtectedRoute><Navigate/></ProtectedRoute>}></Route>
         </Routes>
       </Router>
     </>
