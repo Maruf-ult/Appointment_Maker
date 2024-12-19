@@ -5,33 +5,64 @@ import { useNavigate } from 'react-router-dom';
 import { hideLoading, showLoading } from '../Redux/AlertSlice.jsx';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { setUser } from '../Redux/userSlice.jsx';
+import { useEffect } from 'react';
 
 function Navigate() {
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  useEffect(() => {  }, []);
+
   const markAllAsSeen= async()=>{
      try {
           dispatch(showLoading());
-          const response = await axios.post("/user/mark-all-notif-as-seen",{userId:user._id});
+          const response = await axios.post("http://localhost:3000/api/mark-all-notif-as-seen",{userId:user._id},
+            {
+              headers:{
+                Authorization:`Bearer ${localStorage.getItem("token")}`
+              }
+            }
+          );
           dispatch(hideLoading());
           if(response.data.success){
-               toast.success(response.data.message);
-          }else{
-               toast.error(response.data.message);
+               toast.success(response.data.msg);
+              dispatch(setUser(response.data.data))
+              }else{
+               toast.error(response.data.msg);
           }
 
      } catch (error) {
           dispatch(hideLoading());
-          toast.error(error);
+          toast.error(error.response ? error.response.data.msg : error.msg);
      }
   }
 
 
+  const deleteAll= async()=>{
+    try {
+         dispatch(showLoading());
+         const response = await axios.post("http://localhost:3000/api/delete-all-notif",{userId:user._id},
+           {
+             headers:{
+               Authorization:`Bearer ${localStorage.getItem("token")}`
+             }
+           }
+         );
+         dispatch(hideLoading());
+         if(response.data.success){
+              toast.success(response.data.msg);
+             dispatch(setUser(response.data.data))
+             }else{
+              toast.error(response.data.msg);
+         }
 
-
-
+    } catch (error) {
+         dispatch(hideLoading());
+         toast.error(error.response ? error.response.data.msg : error.msg);
+    }
+ }
 
 
 
@@ -53,8 +84,13 @@ function Navigate() {
           </Tabs.TabPane>
           <Tabs.TabPane tab="seen" key="1">
             <div className="flex justify-end pr-5 ">
-              <h1 className="underline font-semibold cursor-pointer">Delete all</h1>
+              <h1 onClick={()=>deleteAll()} className="underline font-semibold cursor-pointer">Delete all</h1>
             </div>
+            {user?.seenNotifications?.map((notification, index) => (
+              <div key={index} onClick={()=>navigate(notification. onclickPath)} className='bg-slate-200 p-5 mr-5 rounded-sm cursor-pointer mt-2'>
+                {notification.message}
+              </div>
+            ))}
           </Tabs.TabPane>
         </Tabs>
       </ForClients>

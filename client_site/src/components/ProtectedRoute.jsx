@@ -23,6 +23,7 @@ function ProtectedRoute(props) {
       console.log(response.data.success);
       if (response.data.success) {
         dispatch(setUser(response.data.data));
+       
       } else {
         localStorage.clear();
         navigate('/login');
@@ -39,7 +40,7 @@ function ProtectedRoute(props) {
     if (!user) {
       getUser();
     }
-  }, [user, getUser]);
+  }, [user,getUser]);
 
   if (localStorage.getItem("token")) {
     return props.children;

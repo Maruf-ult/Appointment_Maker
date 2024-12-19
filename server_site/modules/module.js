@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import userSchema from "../usermodel/userSchema.js";
 import doctorModel from "../usermodel/doctorSchema.js";
+import userSchema from "../usermodel/userSchema.js";
 export const singup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -23,45 +23,43 @@ export const singup = async (req, res) => {
   }
 };
 
-  export const login = async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      const user = await userSchema.findOne({ email });
-      if (!user) {
-        return res.status(403).json({ msg: "user not found", success: false });
-      }
-
-      const isPassEql = await bcrypt.compare(password, user.password);
-      if (!isPassEql) {
-        return res
-          .status(403)
-          .json({ msg: "email or password is wrong ", success: false });
-      }
-
-      const jwtToken = jwt.sign(
-        { email: user.email, _id: user._id },
-        process.env.JWT_SECRET,
-        { expiresIn: "24h" }
-      );
-
-      res.status(201).json({
-        msg: "logged in successfully",
-        success: true,
-        jwtToken,
-        email,
-        name: user.name,
-      });
-    } catch (error) {
-      return res.status(500).json({ msg: `an internal error occurred ${error}` });
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await userSchema.findOne({ email });
+    if (!user) {
+      return res.status(403).json({ msg: "user not found", success: false });
     }
-  };
 
-  
+    const isPassEql = await bcrypt.compare(password, user.password);
+    if (!isPassEql) {
+      return res
+        .status(403)
+        .json({ msg: "email or password is wrong ", success: false });
+    }
+
+    const jwtToken = jwt.sign(
+      { email: user.email, _id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "24h" }
+    );
+
+    res.status(201).json({
+      msg: "logged in successfully",
+      success: true,
+      jwtToken,
+      email,
+      name: user.name,
+    });
+  } catch (error) {
+    return res.status(500).json({ msg: `an internal error occurred ${error}` });
+  }
+};
 
 export const userInfo = async (req, res) => {
   try {
     const user = await userSchema.findOne({ _id: req.body.userId });
-    user.password=undefined;
+    user.password = undefined;
     if (!user) {
       return res
         .status(200)
@@ -69,7 +67,7 @@ export const userInfo = async (req, res) => {
     } else {
       res.status(200).json({
         success: true,
-        data:user,
+        data: user,
       });
     }
   } catch (error) {
@@ -79,19 +77,13 @@ export const userInfo = async (req, res) => {
   }
 };
 
-
 // export const applyDoc = async (req, res) => {
 //   try {
-  
 
- 
 //     const newDoctor = new doctorModel({ ...req.body, status: "pending" });
 
-  
 //     await newDoctor.save();
-    
 
- 
 //     const adminUser = await userSchema.findOne({ isAdmin: true });
 //     if (!adminUser) {
 //       throw new Error('Admin user not found');
@@ -108,15 +100,13 @@ export const userInfo = async (req, res) => {
 //       onclickPath: "/admin/doctors",
 //     });
 
-   
 //     await userSchema.findOneAndUpdate({ _id: adminUser._id }, { unseenNotification });
 
-     
-//     // console.log('Doctor applied successfully:', newDoctor); 
+//     // console.log('Doctor applied successfully:', newDoctor);
 
 //     return res.status(201).json({ msg: "Doctor account applied successfully", success: true });
 //   } catch (error) {
-//     console.error('Error during doctor application:', error); 
+//     console.error('Error during doctor application:', error);
 //     return res.status(500).json({ msg: `An internal error occurred: ${error.message}` });
 //   }
 // };
@@ -128,7 +118,7 @@ export const applyDoc = async (req, res) => {
 
     const adminUser = await userSchema.findOne({ isAdmin: true });
     if (!adminUser) {
-      throw new Error('Admin user not found');
+      throw new Error("Admin user not found");
     }
 
     const unseenNotifications = adminUser.unseenNotifications || [];
@@ -148,10 +138,62 @@ export const applyDoc = async (req, res) => {
       { new: true }
     );
 
-    return res.status(201).json({ msg: "Doctor account applied successfully", success: true });
+    return res
+      .status(201)
+      .json({ msg: "Doctor account applied successfully", success: true });
   } catch (error) {
-    console.error('Error during doctor application:', error); 
-    return res.status(500).json({ msg: `An internal error occurred: ${error.message}` });
+    console.error("Error during doctor application:", error);
+    return res
+      .status(500)
+      .json({ msg: `An internal error occurred: ${error.message}` });
   }
 };
 
+export const seenNoti = async (req, res) => {
+  try {
+    const user = await userSchema.findOne({ _id: req.body.userId });
+    if (!user) {
+      return res.status(404).json({ success: false, msg: "User not found" });
+    }
+    user.seenNotifications.push(...user.unseenNotifications);
+    user.unseenNotifications = [];
+
+    const updatedUser = await user.save();
+
+    updatedUser.password = undefined;
+    return res
+      .status(200)
+      .json({
+        success: true,
+        msg: "All notifications marked as seen",
+        data: updatedUser,
+      });
+  } catch (error) {
+    console.error("Error during marking notifications as seen:", error);
+    return res
+      .status(500)
+      .json({ msg: `An internal error occurred: ${error.message}` });
+  }
+};
+
+export const deleteNoti = async (req, res) => {
+  try {
+    const user = await userSchema.findOne({ _id: req.body.userId });
+    user.seenNotifications = [];
+    user.unseenNotifications = [];
+    const updatedUser = await user.save();
+    updatedUser.password = undefined;
+    return res
+      .status(200)
+      .json({
+        success: true,
+        msg: "all notification deleted successfully",
+        data: updatedUser,
+      });
+  } catch (error) {
+    console.error("Error during doctor application:", error);
+    return res
+      .status(500)
+      .json({ msg: `An internal error occurred: ${error.message}` });
+  }
+};
