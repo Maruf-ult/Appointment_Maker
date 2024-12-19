@@ -77,39 +77,6 @@ export const userInfo = async (req, res) => {
   }
 };
 
-// export const applyDoc = async (req, res) => {
-//   try {
-
-//     const newDoctor = new doctorModel({ ...req.body, status: "pending" });
-
-//     await newDoctor.save();
-
-//     const adminUser = await userSchema.findOne({ isAdmin: true });
-//     if (!adminUser) {
-//       throw new Error('Admin user not found');
-//     }
-
-//     const unseenNotification = adminUser.unseenNotifications;
-//     unseenNotification.push({
-//       type: "new-doctor-request",
-//       message: `${newDoctor.firstName} ${newDoctor.lastName} has applied for a doctor account`,
-//       data: {
-//         doctorId: newDoctor._id,
-//         name: newDoctor.firstName + " " + newDoctor.lastName,
-//       },
-//       onclickPath: "/admin/doctors",
-//     });
-
-//     await userSchema.findOneAndUpdate({ _id: adminUser._id }, { unseenNotification });
-
-//     // console.log('Doctor applied successfully:', newDoctor);
-
-//     return res.status(201).json({ msg: "Doctor account applied successfully", success: true });
-//   } catch (error) {
-//     console.error('Error during doctor application:', error);
-//     return res.status(500).json({ msg: `An internal error occurred: ${error.message}` });
-//   }
-// };
 
 export const applyDoc = async (req, res) => {
   try {
@@ -149,7 +116,7 @@ export const applyDoc = async (req, res) => {
   }
 };
 
-export const seenNoti = async (req, res) => {
+export const seenNotifications = async (req, res) => {
   try {
     const user = await userSchema.findOne({ _id: req.body.userId });
     if (!user) {
@@ -176,7 +143,7 @@ export const seenNoti = async (req, res) => {
   }
 };
 
-export const deleteNoti = async (req, res) => {
+export const deleteNotifications = async (req, res) => {
   try {
     const user = await userSchema.findOne({ _id: req.body.userId });
     user.seenNotifications = [];
@@ -197,3 +164,4 @@ export const deleteNoti = async (req, res) => {
       .json({ msg: `An internal error occurred: ${error.message}` });
   }
 };
+

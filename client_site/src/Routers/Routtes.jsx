@@ -10,6 +10,8 @@ import ProtectedRoute from "../components/ProtectedRoute.jsx";
 import PublicRoute from "../components/PublicRoute.jsx";
 import ApplyDoc from "../components/ApplyDoc.jsx";
 import Navigate from "../components/Navigate.jsx";
+import UserList from "../components/UserList.jsx";
+import DoctersList from "../components/DoctersList.jsx";
 
 function Routtes() {
   const { loading } = useSelector((state) => state.alerts);
@@ -30,6 +32,8 @@ function Routtes() {
           <Route path="/doc" element={<ProtectedRoute><ForDoctors/></ProtectedRoute>} />
           <Route path="/apply-doc" element={<ProtectedRoute> <ApplyDoc/> </ProtectedRoute>   }/>
           <Route path="/notifications" element={<ProtectedRoute><Navigate/></ProtectedRoute>}></Route>
+          <Route path="/users" element={<ProtectedRoute><UserList/></ProtectedRoute>}></Route>
+          <Route path="/docs" element={<ProtectedRoute><DoctersList/></ProtectedRoute>}></Route>
         </Routes>
       </Router>
     </>

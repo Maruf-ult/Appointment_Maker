@@ -27,7 +27,7 @@ function ForClients({ children }) {
 
   const adminMenu = [
     { name: 'Home', link: '/', icon: faHouse },
-    { name: 'Doctors', path: '/admin/doctors', icon: faStethoscope },
+    { name: 'Doctors', path: '/docs', icon: faStethoscope },
     { name: 'Users', path: '/users', icon: faUsers },
     { name: 'Profile', link: '/profile', icon: faUserDoctor }
   ];
