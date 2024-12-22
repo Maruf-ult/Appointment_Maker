@@ -1,4 +1,4 @@
-import  { useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faUserDoctor, faCalendarCheck, faStethoscope, faSignOutAlt, faUsers, faUser } from "@fortawesome/free-solid-svg-icons";
@@ -13,9 +13,8 @@ function ForClients({ children }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
-  const nav1 = ()=>{
-    navigate('/notifications')
+  const nav1 = () => {
+    navigate('/notifications');
   }
 
   const userMenu = [
@@ -32,7 +31,13 @@ function ForClients({ children }) {
     { name: 'Profile', link: '/profile', icon: faUserDoctor }
   ];
 
-  const menuToBeRendered = user?.isAdmin ? adminMenu : userMenu;
+  const doctorMenu = [
+    { name: 'Home', link: '/', icon: faHouse },
+    { name: 'Appointments', path: '/appointments', icon: faCalendarCheck },
+    { name: 'Profile', path: user ? `/doctor/profile/${user._id}` : '#', icon: faUser }
+  ];
+
+  const menuToBeRendered = user?.isAdmin ? adminMenu : user?.isDoctor ? doctorMenu : userMenu;
 
   const getData = useCallback(async () => {
     try {
@@ -99,9 +104,9 @@ function ForClients({ children }) {
         </div>
 
         <div className="bg-slate-300 w-screen ml-5 mt-1 rounded-md mr-4">
-          <div  className="flex bg-slate-500 p-5 rounded-md justify-end text-white font-bold m-3 cursor-pointer">
+          <div className="flex bg-slate-500 p-5 rounded-md justify-end text-white font-bold m-3 cursor-pointer">
             <Badge onClick={nav1} className="mr-3 " count={user?.unseenNotifications?.length || 0} showZero>
-              <FontAwesomeIcon icon={faUser} className="mr-2 mt-1 size-5"   />
+              <FontAwesomeIcon icon={faUser} className="mr-2 mt-1 size-5" />
             </Badge>
             <p className="hover:text-green-400">{user.name || 'Guest'}</p>
           </div>

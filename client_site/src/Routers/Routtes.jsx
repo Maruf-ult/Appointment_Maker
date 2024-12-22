@@ -12,7 +12,7 @@ import ApplyDoc from "../components/ApplyDoc.jsx";
 import Navigate from "../components/Navigate.jsx";
 import UserList from "../components/UserList.jsx";
 import DoctersList from "../components/DoctersList.jsx";
-
+import Profile from "../components/Doctor/Profile.jsx";
 function Routtes() {
   const { loading } = useSelector((state) => state.alerts);
   return (
@@ -34,6 +34,7 @@ function Routtes() {
           <Route path="/notifications" element={<ProtectedRoute><Navigate/></ProtectedRoute>}></Route>
           <Route path="/users" element={<ProtectedRoute><UserList/></ProtectedRoute>}></Route>
           <Route path="/docs" element={<ProtectedRoute><DoctersList/></ProtectedRoute>}></Route>
+          <Route path="/doctor/profile/:doctorId" element={<ProtectedRoute><Profile/></ProtectedRoute>}></Route>
         </Routes>
       </Router>
     </>

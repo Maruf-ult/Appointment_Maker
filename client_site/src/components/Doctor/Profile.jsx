@@ -1,13 +1,13 @@
-import { useState } from "react";
 import axios from "axios";
+import { useEffect, useState, useCallback } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { hideLoading, showLoading } from "../Redux/AlertSlice.jsx";
-import ForClients from "./ForClients.jsx";
-import DoctorForm from "./DoctorForm.jsx";
+import { hideLoading, showLoading } from "../../Redux/AlertSlice.jsx";
+import DoctorForm from "../DoctorForm.jsx";
+import ForClients from "../ForClients.jsx";
 
-function ApplyDoc() {
+function Profile() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ function ApplyDoc() {
   const handleTimingsChange = (value) => {
     setFormValues((prevValues) => ({
       ...prevValues,
-      timings: value ? [value[0].format('HH:mm'), value[1].format('HH:mm')] : [],
+      timings: value || [],
     }));
   };
 
@@ -77,10 +77,45 @@ function ApplyDoc() {
     }
   };
 
+  const getDocData = useCallback(async () => {
+    try {
+      dispatch(showLoading());
+      const response = await axios.post(
+        "http://localhost:3000/api/doctor/get-doctor-info-by-user-id",
+        {
+          userId: user._id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      dispatch(hideLoading());
+      console.log(response.data.success);
+      if (response.data.success) {
+        setFormValues(response.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+      dispatch(hideLoading());
+    }
+  }, [dispatch, user._id]);
+
+  useEffect(() => {
+    if (user && user._id) {
+      getDocData();
+    }
+  }, [getDocData, user]);
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <ForClients>
-      <h1 className="font-semibold text-black pl-3 pt-1">Apply Doctor Account</h1>
-      <DoctorForm 
+      <h1>Profile</h1>
+      <DoctorForm
         formValues={formValues}
         handleInputChange={handleInputChange}
         handleTimingsChange={handleTimingsChange}
@@ -90,4 +125,4 @@ function ApplyDoc() {
   );
 }
 
-export default ApplyDoc;
+export default Profile;

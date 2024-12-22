@@ -41,6 +41,11 @@ const docSchema = new mongoose.Schema({
     type: String,
     default: "pending",
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  },
 }, { timestamps: true });
 
 const doctorModel = mongoose.model("doctors", docSchema);
