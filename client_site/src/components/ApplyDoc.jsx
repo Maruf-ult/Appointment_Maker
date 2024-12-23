@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { hideLoading, showLoading } from "../Redux/AlertSlice.jsx";
 import ForClients from "./ForClients.jsx";
 import DoctorForm from "./DoctorForm.jsx";
+import moment from 'moment';
 
 function ApplyDoc() {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ function ApplyDoc() {
   const handleTimingsChange = (value) => {
     setFormValues((prevValues) => ({
       ...prevValues,
-      timings: value ? [value[0].format('HH:mm'), value[1].format('HH:mm')] : [],
+      timings: value ? [moment(value[0]).format('HH:mm'), moment(value[1]).format('HH:mm')] : [],
     }));
   };
 

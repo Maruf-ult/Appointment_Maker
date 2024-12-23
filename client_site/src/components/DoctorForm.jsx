@@ -1,9 +1,10 @@
 import { TimePicker } from 'antd';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
-function DoctorForm({ formValues, handleInputChange, handleTimingsChange, handleSubmit }) {
+function DoctorForm({ formValues, handleInputChange, handleTimingsChange }) {
   return (
-    <form onSubmit={handleSubmit} className="text-black">
+    <form  className="text-black">
       <div className="flex space-x-12 pl-16 pt-6">
         <div className="space-y-2">
           <h3 className="text-black ">*First Name</h3>
@@ -11,7 +12,7 @@ function DoctorForm({ formValues, handleInputChange, handleTimingsChange, handle
             name="firstName"
             className="px-8 py-1 border border-black bg-slate-200 font-light"
             type="text"
-            value={formValues.firstName}
+            value={formValues.firstName || ""}
             onChange={handleInputChange}
           />
         </div>
@@ -21,7 +22,7 @@ function DoctorForm({ formValues, handleInputChange, handleTimingsChange, handle
             name="lastName"
             className="px-8 py-1 border border-black bg-slate-200 font-light"
             type="text"
-            value={formValues.lastName}
+            value={formValues.lastName || ""}
             onChange={handleInputChange}
           />
         </div>
@@ -31,7 +32,7 @@ function DoctorForm({ formValues, handleInputChange, handleTimingsChange, handle
             name="phoneNumber"
             className="px-8 py-1 border border-black bg-slate-200 font-light"
             type="text"
-            value={formValues.phoneNumber}
+            value={formValues.phoneNumber || ""}
             onChange={handleInputChange}
           />
         </div>
@@ -44,7 +45,7 @@ function DoctorForm({ formValues, handleInputChange, handleTimingsChange, handle
             name="website"
             className="px-8 py-1 border border-black bg-slate-200 font-light"
             type="text"
-            value={formValues.website}
+            value={formValues.website || ""}
             onChange={handleInputChange}
           />
         </div>
@@ -54,7 +55,7 @@ function DoctorForm({ formValues, handleInputChange, handleTimingsChange, handle
             name="address"
             className="px-8 py-1 border border-black bg-slate-200 font-light"
             type="text"
-            value={formValues.address}
+            value={formValues.address || ""}
             onChange={handleInputChange}
           />
         </div>
@@ -69,7 +70,7 @@ function DoctorForm({ formValues, handleInputChange, handleTimingsChange, handle
             name="specialization"
             className="px-8 py-1 border border-black bg-slate-200 font-light"
             type="text"
-            value={formValues.specialization}
+            value={formValues.specialization || ""}
             onChange={handleInputChange}
           />
         </div>
@@ -79,7 +80,7 @@ function DoctorForm({ formValues, handleInputChange, handleTimingsChange, handle
             name="experience"
             className="px-8 py-1 border border-black bg-slate-200 font-light"
             type="text"
-            value={formValues.experience}
+            value={formValues.experience || ""}
             onChange={handleInputChange}
           />
         </div>
@@ -89,7 +90,7 @@ function DoctorForm({ formValues, handleInputChange, handleTimingsChange, handle
             name="feePerConsultation"
             className="px-8 py-1 border border-black bg-slate-200 font-light"
             type="text"
-            value={formValues.feePerConsultation}
+            value={formValues.feePerConsultation || ""}
             onChange={handleInputChange}
           />
         </div>
@@ -98,18 +99,18 @@ function DoctorForm({ formValues, handleInputChange, handleTimingsChange, handle
       <div className="flex space-x-12 pl-16 pt-2">
         <div className="space-y-2">
           <h3 className="text-black ">*Timings</h3>
-          <TimePicker.RangePicker 
+          <TimePicker.RangePicker
             className="border border-black py-1 font-light"
-            value={formValues.timings.length ? [formValues.timings[0], formValues.timings[1]] : null}
-            onChange={(value) => handleTimingsChange(value ? [value[0], value[1]] : [])}
+            value={formValues.timings && formValues.timings.length ? [moment(formValues.timings[0], 'HH:mm'), moment(formValues.timings[1], 'HH:mm')] : null}
+            onChange={(value) => handleTimingsChange(value ? [moment(value[0]), moment(value[1])] : [])}
           />
         </div>
       </div>
 
-      <div className="flex justify-end pr-20 mb-2 ">
+      <div className="flex justify-end pr-20 mb-2">
         <button
           type="submit"
-          className="px-8 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 "
+          className="px-8 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
         >
           Apply
         </button>
@@ -122,7 +123,7 @@ DoctorForm.propTypes = {
   formValues: PropTypes.object.isRequired,
   handleInputChange: PropTypes.func.isRequired,
   handleTimingsChange: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-}
+  // handleSubmit: PropTypes.func.isRequired,
+};
 
 export default DoctorForm;

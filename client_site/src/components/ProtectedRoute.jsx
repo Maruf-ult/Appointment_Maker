@@ -20,7 +20,7 @@ function ProtectedRoute(props) {
         },
       });
       dispatch(hideLoading());
-      console.log(response.data.success);
+      // console.log(response.data.success);
       if (response.data.success) {
         dispatch(setUser(response.data.data));
        

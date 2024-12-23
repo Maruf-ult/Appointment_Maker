@@ -3,10 +3,11 @@ import doctorModel from "../usermodel/doctorSchema.js";
 
 export const doctorInfo = async (req, res) => {
      try {
-       const doctor = await doctorModel.findOne({ _id: req.body.userId });
+       const doctor = await doctorModel.findOne({ userId: req.body.userId });
        res.status(200).json({
          success: true,
          data: doctor,
+         msg: "Doctor info fetched successfully",
        });
      } catch (error) {
        return res
