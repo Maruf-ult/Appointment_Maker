@@ -1,17 +1,15 @@
 import axios from "axios";
 import { useEffect, useState, useCallback } from "react";
-// import toast from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { hideLoading, showLoading } from "../../Redux/AlertSlice.jsx";
 import DoctorForm from "../DoctorForm.jsx";
 import ForClients from "../ForClients.jsx";
+import moment from 'moment';
 
 function Profile() {
   const dispatch = useDispatch();
-  const params = useParams();
   const { user } = useSelector((state) => state.user);
-  // const navigate = useNavigate();
 
   const [formValues, setFormValues] = useState({
     firstName: "",
@@ -25,7 +23,7 @@ function Profile() {
     timings: [],
   });
 
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -36,58 +34,32 @@ function Profile() {
   };
 
   const handleTimingsChange = (value) => {
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      timings: value || [],
-    }));
+    console.log("Selected Timings:", value);
+    
+    if (value && value.length === 2 && moment(value[0]).isValid() && moment(value[1]).isValid()) {
+      const formattedTimings = [value[0].format('HH:mm'), value[1].format('HH:mm')];
+      console.log("Formatted Timings:", formattedTimings);
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        timings: formattedTimings,
+      }));
+    } else {
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        timings: [],
+      }));
+    }
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     dispatch(showLoading());
-  //     const response = await axios.post(
-  //       "http://localhost:3000/api/apply-doc",
-  //       {
-  //         ...formValues,
-  //         userId: user._id,
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         },
-  //       }
-  //     );
-  //     dispatch(hideLoading());
-  //     if (response.data.success) {
-  //       toast.success(response.data.msg);
-  //       navigate("/home");
-  //     } else {
-  //       toast.error(response.data.msg);
-  //     }
-  //   } catch (error) {
-  //     dispatch(hideLoading());
-  //     if (error.response) {
-  //       toast.error(`Server Error: ${error.response.data.message}`);
-  //       console.error("Error Response:", error.response.data);
-  //     } else if (error.request) {
-  //       toast.error("No response from server. Please try again later.");
-  //       console.error("Error Request:", error.request);
-  //     } else {
-  //       toast.error("Request Error: " + error.message);
-  //       console.error("Error Message:", error.message);
-  //     }
-  //   }
-  // };
+  
 
   const getDocData = useCallback(async () => {
-    if (!user || !user._id) return; // Check if user is defined
+    if (!user || !user._id) return;
     try {
       dispatch(showLoading());
       const response = await axios.post(
         "http://localhost:3000/api/get-doctor-info-by-user-id",
         {
-          userId: params.userId,
+          userId: user._id,
         },
         {
           headers: {
@@ -99,15 +71,48 @@ function Profile() {
       if (response.data.success) {
         setFormValues(response.data.data);
       } else {
-        setFormValues({}); // Ensure formValues is never null
+        setFormValues({});
       }
-      setLoading(false); // Set loading to false after data is fetched
+      setLoading(false);
     } catch (error) {
-      console.log(error);
+      toast.error("Error fetching data. Please try again later.");
       dispatch(hideLoading());
-      setLoading(false); // Set loading to false if there's an error
+      setLoading(false);
+      console.error("Error: ", error);
     }
   }, [dispatch, user]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(showLoading());
+      const response = await axios.post(
+        "http://localhost:3000/api/update-doctor-profile",
+        {
+          ...formValues,
+          userId: user._id,
+          // Additional property example
+          timings: formValues.timings,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      dispatch(hideLoading());
+      if (response.data.success) {
+        toast.success(response.data.msg);
+        setFormValues(response.data.data);  // Update form values with the updated data
+      } else {
+        toast.error(response.data.msg);
+      }
+    } catch (error) {
+      dispatch(hideLoading());
+      toast.error("Error updating profile. Please try again later.");
+      console.error("Error: ", error);
+    }
+  };
 
   useEffect(() => {
     if (user && user._id) {
@@ -116,17 +121,17 @@ function Profile() {
   }, [getDocData, user]);
 
   if (!user || loading) {
-    return <div>Loading...</div>; // Show loading state while fetching data
+    return <div>Loading...</div>;
   }
 
   return (
     <ForClients>
       <h1>Profile</h1>
       <DoctorForm
-        formValues={formValues || {}} // Ensure formValues is never null
+        formValues={formValues}
         handleInputChange={handleInputChange}
         handleTimingsChange={handleTimingsChange}
-        // handleSubmit={handleSubmit}
+        handleSubmit={handleSubmit}
       />
     </ForClients>
   );

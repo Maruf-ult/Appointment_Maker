@@ -2,12 +2,12 @@ import { TimePicker } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-function DoctorForm({ formValues, handleInputChange, handleTimingsChange }) {
+function DoctorForm({ formValues, handleInputChange, handleTimingsChange, handleSubmit }) {
   return (
-    <form  className="text-black">
+    <form onSubmit={handleSubmit} className="text-black">
       <div className="flex space-x-12 pl-16 pt-6">
         <div className="space-y-2">
-          <h3 className="text-black ">*First Name</h3>
+          <h3 className="text-black">*First Name</h3>
           <input
             name="firstName"
             className="px-8 py-1 border border-black bg-slate-200 font-light"
@@ -17,7 +17,7 @@ function DoctorForm({ formValues, handleInputChange, handleTimingsChange }) {
           />
         </div>
         <div className="space-y-2">
-          <h3 className="text-black ">*Last Name</h3>
+          <h3 className="text-black">*Last Name</h3>
           <input
             name="lastName"
             className="px-8 py-1 border border-black bg-slate-200 font-light"
@@ -98,11 +98,13 @@ function DoctorForm({ formValues, handleInputChange, handleTimingsChange }) {
 
       <div className="flex space-x-12 pl-16 pt-2">
         <div className="space-y-2">
-          <h3 className="text-black ">*Timings</h3>
+          <h3 className="text-black">*Timings</h3>
           <TimePicker.RangePicker
+            format="HH:mm"
             className="border border-black py-1 font-light"
-            value={formValues.timings && formValues.timings.length ? [moment(formValues.timings[0], 'HH:mm'), moment(formValues.timings[1], 'HH:mm')] : null}
-            onChange={(value) => handleTimingsChange(value ? [moment(value[0]), moment(value[1])] : [])}
+            value={formValues.timings.length === 2 ? [moment(formValues.timings[0], 'HH:mm'), moment(formValues.timings[1], 'HH:mm')] : []}
+            onChange={handleTimingsChange}
+            
           />
         </div>
       </div>
@@ -123,7 +125,7 @@ DoctorForm.propTypes = {
   formValues: PropTypes.object.isRequired,
   handleInputChange: PropTypes.func.isRequired,
   handleTimingsChange: PropTypes.func.isRequired,
-  // handleSubmit: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
 };
 
 export default DoctorForm;

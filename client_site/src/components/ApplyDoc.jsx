@@ -34,11 +34,23 @@ function ApplyDoc() {
   };
 
   const handleTimingsChange = (value) => {
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      timings: value ? [moment(value[0]).format('HH:mm'), moment(value[1]).format('HH:mm')] : [],
-    }));
+    console.log("Selected Timings:", value);
+    
+    if (value && value.length === 2 && moment(value[0]).isValid() && moment(value[1]).isValid()) {
+      const formattedTimings = [value[0].format('HH:mm'), value[1].format('HH:mm')];
+      console.log("Formatted Timings:", formattedTimings);
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        timings: formattedTimings,
+      }));
+    } else {
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        timings: [],
+      }));
+    }
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,6 +61,11 @@ function ApplyDoc() {
         {
           ...formValues,
           userId: user._id,
+          // Additional property example
+          timings:[
+            moment(formValues.timings[0], 'HH:mm'),
+            moment(formValues.timings[1], 'HH:mm'),
+          ]
         },
         {
           headers: {

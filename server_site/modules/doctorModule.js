@@ -16,3 +16,29 @@ export const doctorInfo = async (req, res) => {
      }
    };
    
+
+// controllers/doctorController.js
+
+export const updateDoctorInfo = async (req, res) => {
+  try {
+    const doctor = await doctorModel.findOneAndUpdate(
+      { userId: req.body.userId },
+      req.body,
+      { new: true }  
+    );
+    res.status(200).json({
+      success: true,
+      msg: "Doctor info updated successfully",
+      data: doctor,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      msg: "Error updating doctor info",
+      success: false,
+      error,
+    });
+  }
+};
+
+     
+     

@@ -4,7 +4,7 @@ import { singup,login, userInfo,applyDoc,seenNotifications,deleteNotifications }
 import { getUsers,getDoctors,chngDocUsers } from "../modules/adminModule.js";
 import { doctorInfo } from "../modules/doctorModule.js";
 import { authMiddleware } from "../middlewares/middleware.js";
-
+import { updateDoctorInfo } from "../modules/doctorModule.js";
 const router = express.Router();
 
 router.post("/reg",signUpValidation,validate,singup);
@@ -17,5 +17,6 @@ router.post("/mark-all-notif-as-seen",authMiddleware,seenNotifications);
 router.post("/delete-all-notif",authMiddleware,deleteNotifications);
 router.post("/change-doc-status",authMiddleware,chngDocUsers);
 router.post("/get-doctor-info-by-user-id",authMiddleware,doctorInfo);
+router.post("/update-doctor-profile",authMiddleware,updateDoctorInfo);
 
 export default router;
