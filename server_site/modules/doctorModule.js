@@ -41,4 +41,24 @@ export const updateDoctorInfo = async (req, res) => {
 };
 
      
+
+
+export const doctorInformation = async (req, res) => {
+  try {
+    const doctor = await doctorModel.findOne({ _id: req.body.doctorId });
+    console.log(doctor);
+    if (!doctor) {
+      return res.status(404).json({ msg: "Doctor not found", success: false });
+    }
+    res.status(200).json({
+      success: true,
+      data: doctor,
+      msg: "Doctor info fetched successfully",
+    });
+  } catch (error) {
+    console.error("Error getting doctor info: ", error);
+    return res.status(500).json({ msg: "Error getting doctor info", success: false, error });
+  }
+};
+
      

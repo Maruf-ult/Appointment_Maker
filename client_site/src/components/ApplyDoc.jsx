@@ -1,12 +1,12 @@
-import { useState } from "react";
 import axios from "axios";
+import moment from "moment";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { hideLoading, showLoading } from "../Redux/AlertSlice.jsx";
-import ForClients from "./ForClients.jsx";
 import DoctorForm from "./DoctorForm.jsx";
-import moment from 'moment';
+import Layout from "./Layout.jsx";
 
 function ApplyDoc() {
   const dispatch = useDispatch();
@@ -35,9 +35,17 @@ function ApplyDoc() {
 
   const handleTimingsChange = (value) => {
     console.log("Selected Timings:", value);
-    
-    if (value && value.length === 2 && moment(value[0]).isValid() && moment(value[1]).isValid()) {
-      const formattedTimings = [value[0].format('HH:mm'), value[1].format('HH:mm')];
+
+    if (
+      value &&
+      value.length === 2 &&
+      moment(value[0]).isValid() &&
+      moment(value[1]).isValid()
+    ) {
+      const formattedTimings = [
+        value[0].format("HH:mm"),
+        value[1].format("HH:mm"),
+      ];
       console.log("Formatted Timings:", formattedTimings);
       setFormValues((prevValues) => ({
         ...prevValues,
@@ -50,7 +58,6 @@ function ApplyDoc() {
       }));
     }
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,10 +69,10 @@ function ApplyDoc() {
           ...formValues,
           userId: user._id,
           // Additional property example
-          timings:[
-            moment(formValues.timings[0], 'HH:mm'),
-            moment(formValues.timings[1], 'HH:mm'),
-          ]
+          timings: [
+            moment(formValues.timings[0], "HH:mm"),
+            moment(formValues.timings[1], "HH:mm"),
+          ],
         },
         {
           headers: {
@@ -96,15 +103,17 @@ function ApplyDoc() {
   };
 
   return (
-    <ForClients>
-      <h1 className="font-semibold text-black pl-3 pt-1">Apply Doctor Account</h1>
-      <DoctorForm 
+    <Layout>
+      <h1 className="font-semibold text-black pl-3 pt-1">
+        Apply Doctor Account
+      </h1>
+      <DoctorForm
         formValues={formValues}
         handleInputChange={handleInputChange}
         handleTimingsChange={handleTimingsChange}
         handleSubmit={handleSubmit}
       />
-    </ForClients>
+    </Layout>
   );
 }
 

@@ -1,11 +1,11 @@
 import axios from "axios";
-import { useEffect, useState, useCallback } from "react";
+import moment from "moment";
+import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { hideLoading, showLoading } from "../../Redux/AlertSlice.jsx";
 import DoctorForm from "../DoctorForm.jsx";
-import ForClients from "../ForClients.jsx";
-import moment from 'moment';
+import Layout from "../Layout.jsx";
 
 function Profile() {
   const dispatch = useDispatch();
@@ -35,9 +35,17 @@ function Profile() {
 
   const handleTimingsChange = (value) => {
     console.log("Selected Timings:", value);
-    
-    if (value && value.length === 2 && moment(value[0]).isValid() && moment(value[1]).isValid()) {
-      const formattedTimings = [value[0].format('HH:mm'), value[1].format('HH:mm')];
+
+    if (
+      value &&
+      value.length === 2 &&
+      moment(value[0]).isValid() &&
+      moment(value[1]).isValid()
+    ) {
+      const formattedTimings = [
+        value[0].format("HH:mm"),
+        value[1].format("HH:mm"),
+      ];
       console.log("Formatted Timings:", formattedTimings);
       setFormValues((prevValues) => ({
         ...prevValues,
@@ -50,7 +58,6 @@ function Profile() {
       }));
     }
   };
-  
 
   const getDocData = useCallback(async () => {
     if (!user || !user._id) return;
@@ -103,7 +110,7 @@ function Profile() {
       dispatch(hideLoading());
       if (response.data.success) {
         toast.success(response.data.msg);
-        setFormValues(response.data.data);  // Update form values with the updated data
+        setFormValues(response.data.data); // Update form values with the updated data
       } else {
         toast.error(response.data.msg);
       }
@@ -125,7 +132,7 @@ function Profile() {
   }
 
   return (
-    <ForClients>
+    <Layout>
       <h1>Profile</h1>
       <DoctorForm
         formValues={formValues}
@@ -133,7 +140,7 @@ function Profile() {
         handleTimingsChange={handleTimingsChange}
         handleSubmit={handleSubmit}
       />
-    </ForClients>
+     </Layout>
   );
 }
 

@@ -2,6 +2,12 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import doctorModel from "../usermodel/doctorSchema.js";
 import userSchema from "../usermodel/userSchema.js";
+import appointmentModel from "../usermodel/appointmentSchema.js";
+
+
+
+
+
 export const singup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -164,4 +170,60 @@ export const deleteNotifications = async (req, res) => {
       .json({ msg: `An internal error occurred: ${error.message}` });
   }
 };
+
+
+
+export const getApproveDoctors = async (req, res) => {
+  try {
+    const docs = await doctorModel.find({ status: "approved" });
+    if (!docs || docs.length === 0) {
+      return res.status(404).json({ msg: "No approved doctors found", success: false });
+    } else {
+      res.status(200).json({
+        success: true,
+        msg: "Approved doctors fetched successfully",
+        data: docs,
+      });
+    }
+  } catch (error) {
+    console.error("Error getting approved doctors info: ", error);
+    return res.status(500).json({
+      msg: "Error getting approved doctors info",
+      success: false,
+      error: error.message || error
+    });
+  }
+};
+
+
+
+export const makeAppointment = async (req, res) => {
+  try {
+     req.body.status = "pending";
+     const needAppointment = await appointmentModel(req.body);
+     await needAppointment.save();
+     const user = await userSchema.findOne({ _id: req.body.doctorInfo.userId });
+     user.unseenNotifications.push({
+       type: "new appointment-request-from-patient",
+       message: `${req.body.userInfo.name} wants to book an appointment with you`,
+       onclickPath: "/appointments",
+    })
+         
+      await user.save();
+
+     res.status(200).json({
+       success: true,
+       msg: "Appointment booked successfully",
+       data: needAppointment,
+     });
+  } catch (error) {
+    console.error("Error getting appointment: ", error);
+    return res.status(500).json({
+      msg: "Error getting appointment",
+      success: false,
+      error: error.message || error
+    });
+  }
+};
+
 

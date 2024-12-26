@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { setUser } from "../Redux/userSlice"; 
 import { Badge } from "antd";
 
-function ForClients({ children }) {
+function Layout({ children }) {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -119,8 +119,8 @@ function ForClients({ children }) {
   );
 }
 
-ForClients.propTypes = {
+Layout.propTypes = {
   children: PropTypes.node
 };
 
-export default ForClients;
+export default Layout;

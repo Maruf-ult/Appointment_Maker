@@ -1,10 +1,10 @@
 import { Table } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../Redux/AlertSlice";
-import ForClients from "./ForClients";
-import toast from "react-hot-toast";
+import Layout from "./Layout";
 
 function DoctersList() {
   const [docs, setDocs] = useState([]);
@@ -27,7 +27,7 @@ function DoctersList() {
         console.log(response.data.data);
       }
     } catch (error) {
-     toast.error(error.response ? error.response.data.msg : error.msg);
+      toast.error(error.response ? error.response.data.msg : error.msg);
       dispatch(hideLoading());
       console.log(error);
     }
@@ -47,12 +47,12 @@ function DoctersList() {
       );
       dispatch(hideLoading());
       if (response.data.success) {
-          toast.success(response.data.msg);
+        toast.success(response.data.msg);
         getDocData();
         console.log(response.data.data);
       }
     } catch (error) {
-    toast.error(error.response ? error.response.data.msg : error.msg);
+      toast.error(error.response ? error.response.data.msg : error.msg);
       dispatch(hideLoading());
       console.log(error);
     }
@@ -111,10 +111,10 @@ function DoctersList() {
   ];
 
   return (
-    <ForClients>
+    <Layout>
       <h1 className=" text-3xl text-black pl-3 pb-3">Docs List</h1>
       <Table className="cursor-pointer" columns={columns} dataSource={docs} />
-    </ForClients>
+      </Layout>
   );
 }
 

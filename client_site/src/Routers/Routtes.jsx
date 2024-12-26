@@ -1,19 +1,21 @@
 import { useSelector } from "react-redux";
 // import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "../App.css";
 import Home from "../Home/Home.jsx";
 import Login from "../Login/Login.jsx";
 import Register from "../Login/Register.jsx";
-import ForClients from "../components/ForClients.jsx";
-import ForDoctors from "../components/ForDoctors.jsx";
-import ProtectedRoute from "../components/ProtectedRoute.jsx";
-import PublicRoute from "../components/PublicRoute.jsx";
 import ApplyDoc from "../components/ApplyDoc.jsx";
-import Navigate from "../components/Navigate.jsx";
-import UserList from "../components/UserList.jsx";
 import DoctersList from "../components/DoctersList.jsx";
 import Profile from "../components/Doctor/Profile.jsx";
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import ForDoctors from "../components/ForDoctors.jsx";
+import Navigate from "../components/Navigate.jsx";
+import ProtectedRoute from "../components/ProtectedRoute.jsx";
+import PublicRoute from "../components/PublicRoute.jsx";
+import UserList from "../components/UserList.jsx";
+import HomePage from "../components/HomePage.jsx";
+import BookAppointment from "../components/BookAppointment.jsx";
+
 
 const router = createBrowserRouter(
   [
@@ -23,39 +25,83 @@ const router = createBrowserRouter(
     },
     {
       path: "/login",
-      element: <PublicRoute><Login /></PublicRoute>,
+      element: (
+        <PublicRoute>
+          <Login />
+        </PublicRoute>
+      ),
     },
     {
       path: "/reg",
-      element: <PublicRoute><Register /></PublicRoute>,
+      element: (
+        <PublicRoute>
+          <Register />
+        </PublicRoute>
+      ),
     },
     {
       path: "/home",
-      element: <ProtectedRoute><ForClients /></ProtectedRoute>,
+      element: (
+        <ProtectedRoute>
+            <HomePage />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/doc",
-      element: <ProtectedRoute><ForDoctors /></ProtectedRoute>,
+      element: (
+        <ProtectedRoute>
+          <ForDoctors />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/apply-doc",
-      element: <ProtectedRoute><ApplyDoc /></ProtectedRoute>,
+      element: (
+        <ProtectedRoute>
+          <ApplyDoc />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/notifications",
-      element: <ProtectedRoute><Navigate /></ProtectedRoute>,
+      element: (
+        <ProtectedRoute>
+          <Navigate />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/users",
-      element: <ProtectedRoute><UserList /></ProtectedRoute>,
+      element: (
+        <ProtectedRoute>
+          <UserList />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/docs",
-      element: <ProtectedRoute><DoctersList /></ProtectedRoute>,
+      element: (
+        <ProtectedRoute>
+          <DoctersList />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/doctor/profile/:userId",
-      element: <ProtectedRoute><Profile /></ProtectedRoute>,
+      element: (
+        <ProtectedRoute>
+          <Profile />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/book-appointment/:doctorId",
+      element: (
+        <ProtectedRoute>
+          <BookAppointment />
+        </ProtectedRoute>
+      ),
     },
   ],
   {
