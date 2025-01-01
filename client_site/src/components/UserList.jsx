@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../Redux/AlertSlice";
 import Layout from "./Layout";
+import moment from "moment";
 function UserList() {
   const [users, setUsers] = useState([]);
   const dispatch = useDispatch();
@@ -46,6 +47,9 @@ function UserList() {
     {
       title: "Created At",
       dataIndex: "createdAt",
+      render: (text, record) => (
+        moment(record.createdAt).format("DD-MM-YYYY")
+      ),
     },
     {
       title: "Actions",

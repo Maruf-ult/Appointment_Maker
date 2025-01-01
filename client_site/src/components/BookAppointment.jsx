@@ -5,13 +5,14 @@ import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import bookingImg from "../image/Online calendar-bro.png";
 import { hideLoading, showLoading } from "../Redux/AlertSlice";
 import Layout from "./Layout";
 
 function BookAppointment() {
   const [isAvailable, setIsAvailable] = useState(false);
-  const [date, setDate] = useState();
-  const [time, setTime] = useState();
+  const [date, setDate] = useState(null);
+  const [time, setTime] = useState(null);
   const { user } = useSelector((state) => state.user);
   const params = useParams();
   const dispatch = useDispatch();
@@ -45,8 +46,36 @@ function BookAppointment() {
   }, [dispatch, params.doctorId]);
 
   const bookAppointment = async () => {
+    setIsAvailable(false);
     try {
+      if (!date || !time) {
+        toast.error("Please select both date and time for the appointment.");
+        return;
+      }
+
+      console.log("Selected Date:", date);
+      console.log("Selected Time:", time);
+
       dispatch(showLoading());
+
+      // Format date and time values
+      const formattedDate =
+        date && date.format ? date.format("DD-MM-YYYY") : null;
+      const formattedTime = time && time.format ? time.format("HH:mm") : null;
+
+      // Ensure formattedDate and formattedTime are valid
+      if (!formattedDate || !formattedTime || formattedTime === "00:00") {
+        toast.error("Please select valid date and time.");
+        dispatch(hideLoading());
+        return;
+      }
+
+      // Convert time to ISO format
+      const isoTime = moment(formattedTime, "HH:mm").toISOString();
+
+      console.log("Formatted Date:", formattedDate);
+      console.log("Formatted Time (ISO):", isoTime);
+
       const response = await axios.post(
         "http://localhost:3000/api/book-appointment",
         {
@@ -54,8 +83,8 @@ function BookAppointment() {
           userId: user._id,
           doctorInfo: doctor,
           userInfo: user,
-          date: moment(date).format("YYYY-MM-DD"),
-          time: moment(time).format("HH:mm"),
+          date: formattedDate, // Send date as is
+          time: isoTime, // Send time in ISO format
         },
         {
           headers: {
@@ -76,6 +105,62 @@ function BookAppointment() {
     }
   };
 
+  const checkAvailability = async () => {
+    try {
+      if (!date || !time) {
+        toast.error("Please select both date and time for the appointment.");
+        return;
+      }
+
+      dispatch(showLoading());
+
+      // Format date and time values
+      const formattedDate =
+        date && date.format ? date.format("DD-MM-YYYY") : null;
+      const formattedTime = time && time.format ? time.format("HH:mm") : null;
+
+      // Ensure formattedDate and formattedTime are valid
+      if (!formattedDate || !formattedTime || formattedTime === "00:00") {
+        toast.error("Please select valid date and time.");
+        dispatch(hideLoading());
+        return;
+      }
+
+      // Convert time to ISO format
+      const isoTime = moment(formattedTime, "HH:mm").toISOString();
+
+      console.log("Formatted Date:", formattedDate);
+      console.log("Formatted Time (ISO):", isoTime);
+
+      const response = await axios.post(
+        "http://localhost:3000/api/check-booking-availability",
+        {
+          doctorId: params.doctorId,
+          date: formattedDate,
+          time: isoTime,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      dispatch(hideLoading());
+      console.log(response.data.msg);
+      if (response.data.success) {
+        toast.success(response.data.msg);
+        setIsAvailable(true);
+      } else {
+        toast.error(response.data.msg);
+      }
+    } catch (error) {
+      toast.error("Error checking appointment. Please try again later.");
+      dispatch(hideLoading());
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (params.doctorId) {
       getDocData();
@@ -91,30 +176,67 @@ function BookAppointment() {
               {doctor.firstName} {doctor.lastName}
             </h1>
             <hr className="border mt-3 mb-3 border-slate-300" />
-            <Row>
+
+            <Row
+              gutter={20}
+              className="mt-5 space-y-5 flex justify-center space-x-5"
+            >
               <Col span={8} sm={24} sx={24} lg={8}>
-                <h1 className="font-normal p-2">
-                  <b>Timings:</b> {doctor.timings[0]} - {doctor.timings[1]}
+                <img src={bookingImg} alt="" />
+              </Col>
+
+              <Col span={8} sm={24} sx={24} lg={8}>
+                <p className="mt-3 pl-2">
+                  <b>Phone Number:</b> {doctor.phoneNumber}
+                </p>
+                <p className="mt-3 pl-2">
+                  <b>Address:</b> {doctor.address}
+                </p>
+                <p className="mt-3 pl-2">
+                  <b>Fee per Visit:</b> {doctor.feePerConsultation}
+                </p>
+                <h1 className="mt-3 pl-2">
+                  <b>Timings:</b>{" "}
+                  {moment(doctor.timings[0], "HH:mm").format("HH:mm")} -{" "}
+                  {moment(doctor.timings[1], "HH:mm").format("HH:mm")}
                 </h1>
+
                 <div className="flex flex-col mt-2 p-2">
                   <DatePicker
                     format={"DD-MM-YYYY"}
-                    onChange={(value) => setDate(value)}
+                    onChange={(value) => {
+                      setIsAvailable(false);
+                      console.log("DatePicker Value:", value);
+                      setDate(value);
+                    }}
                   />
                   <TimePicker
                     format="HH:mm"
                     className="mt-3"
-                    onChange={(value) => setTime(value)}
+                    onChange={(value) => {
+                      setIsAvailable(false);
+                      console.log("TimePicker Value:", value);
+                      setTime(value);
+                    }}
+                    onOk={(value) => {
+                      console.log("TimePicker OK Value:", value);
+                      setTime(value);
+                    }}
                   />
-                  <button className="btn bg-slate-400 text-black mt-3 w-full">
-                    Check Availability
-                  </button>
                   <button
-                    onClick={bookAppointment}
+                    onClick={checkAvailability}
                     className="btn bg-slate-400 text-black mt-3 w-full"
                   >
-                    Book Now
+                    Check Availability
                   </button>
+                  {isAvailable && (
+                    <button
+                      onClick={bookAppointment}
+                      className="btn bg-slate-400 text-black mt-3 w-full"
+                    >
+                      Book Now
+                    </button>
+                  )}
                 </div>
               </Col>
             </Row>

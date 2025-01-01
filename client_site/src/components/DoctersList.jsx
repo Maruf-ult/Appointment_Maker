@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../Redux/AlertSlice";
 import Layout from "./Layout";
+import moment from "moment";
 
 function DoctersList() {
   const [docs, setDocs] = useState([]);
@@ -79,6 +80,9 @@ function DoctersList() {
     {
       title: "Created At",
       dataIndex: "createdAt",
+         render: (text, record) => (
+              moment(record.createdAt).format("DD-MM-YYYY")
+            ),
     },
     {
       title: "Status",

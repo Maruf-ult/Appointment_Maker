@@ -15,6 +15,8 @@ import PublicRoute from "../components/PublicRoute.jsx";
 import UserList from "../components/UserList.jsx";
 import HomePage from "../components/HomePage.jsx";
 import BookAppointment from "../components/BookAppointment.jsx";
+import Appointment from "../components/Appointment.jsx";
+import DoctorAppointment from "../components/Doctor/DoctorAppointment.jsx";
 
 
 const router = createBrowserRouter(
@@ -80,7 +82,7 @@ const router = createBrowserRouter(
       ),
     },
     {
-      path: "/docs",
+      path: "/doctors",
       element: (
         <ProtectedRoute>
           <DoctersList />
@@ -100,6 +102,22 @@ const router = createBrowserRouter(
       element: (
         <ProtectedRoute>
           <BookAppointment />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/appointments",
+      element: (
+        <ProtectedRoute>
+          <Appointment />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/doctor/appointments",
+      element: (
+        <ProtectedRoute>
+          <DoctorAppointment />
         </ProtectedRoute>
       ),
     },

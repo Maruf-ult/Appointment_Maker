@@ -1,13 +1,14 @@
 import express from "express";
 import { validate,signUpValidation,loginValidation } from "../validation/errorHandling.js";
-import { singup,login, userInfo,applyDoc,seenNotifications,deleteNotifications } from "../modules/userModule.js";
+import { singup,login, userInfo,applyDoc,seenNotifications,deleteNotifications, getAppointmentsByUserId } from "../modules/userModule.js";
 import { getUsers,getDoctors,chngDocUsers } from "../modules/adminModule.js";
-import { doctorInfo } from "../modules/doctorModule.js";
+import { chngAppointmentStatus, doctorInfo, getAppointmentsByDoctorId } from "../modules/doctorModule.js";
 import { authMiddleware } from "../middlewares/middleware.js";
 import { updateDoctorInfo } from "../modules/doctorModule.js";
 import { getApproveDoctors } from "../modules/userModule.js";
 import { doctorInformation } from "../modules/doctorModule.js";
 import { makeAppointment } from "../modules/userModule.js";
+import { checkBookingAvailability } from "../modules/userModule.js";
 
 const router = express.Router();
 
@@ -25,6 +26,9 @@ router.post("/update-doctor-profile",authMiddleware,updateDoctorInfo);
 router.get("/get-all-approved-doctors",authMiddleware,getApproveDoctors);
 router.post("/get-doctor-info-by-id",authMiddleware,doctorInformation);
 router.post("/book-appointment",authMiddleware,makeAppointment);
-
+router.post("/check-booking-availability",authMiddleware,checkBookingAvailability);
+router.get("/get-appointments-by-user-id",authMiddleware,getAppointmentsByUserId);
+router.get("/get-appointments-by-doctor-id",authMiddleware,getAppointmentsByDoctorId);
+router.post("/change-appointment-status",authMiddleware,chngAppointmentStatus);
 
 export default router;

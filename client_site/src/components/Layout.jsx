@@ -18,22 +18,22 @@ function Layout({ children }) {
   }
 
   const userMenu = [
-    { name: 'Home', link: '/', icon: faHouse },
+    { name: 'Home', link: '/home', icon: faHouse },
     { name: 'Appointments', path: '/appointments', icon: faCalendarCheck },
     { name: 'Apply Doctor', link: '/apply-doc', icon: faUserDoctor },
     { name: 'Profile', path: '/profile', icon: faUser }
   ];
 
   const adminMenu = [
-    { name: 'Home', link: '/', icon: faHouse },
+    { name: 'Home', link: '/home', icon: faHouse },
     { name: 'Doctors', path: '/docs', icon: faStethoscope },
     { name: 'Users', path: '/users', icon: faUsers },
     { name: 'Profile', link: '/profile', icon: faUserDoctor }
   ];
 
   const doctorMenu = [
-    { name: 'Home', link: '/', icon: faHouse },
-    { name: 'Appointments', path: '/appointments', icon: faCalendarCheck },
+    { name: 'Home', link: '/home', icon: faHouse },
+    { name: 'Appointments', path: '/doctor/appointments', icon: faCalendarCheck },
     { name: 'Profile', path: user ? `/doctor/profile/${user._id}` : '#', icon: faUser }
   ];
 
@@ -86,7 +86,9 @@ function Layout({ children }) {
         <div className="h-[92vh] w-48 bg-slate-500 ml-6 mt-3 rounded-md">
           <div className="flex flex-col space-y-11">
             <h1 className="text-3xl font-bold ml-3 mt-2 text-black">
-              SH <br /> <span className="text-2xl font-normal">User</span>
+              SH <br /> <span className="text-2xl font-normal">
+                {user?.isAdmin ? 'admin' : user?.isDoctor ? 'doctor' : 'user'}
+              </span>
             </h1>
             <ul className="space-y-8 ml-5 text-white">
               {menuToBeRendered.map((item, index) => (

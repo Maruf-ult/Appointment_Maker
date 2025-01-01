@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import doctorModel from "../usermodel/doctorSchema.js";
 import userSchema from "../usermodel/userSchema.js";
 import appointmentModel from "../usermodel/appointmentSchema.js";
-
+import moment from "moment";
 
 
 
@@ -160,7 +160,7 @@ export const deleteNotifications = async (req, res) => {
       .status(200)
       .json({
         success: true,
-        msg: "all notification deleted successfully",
+        msg: "All notification deleted successfully",
         data: updatedUser,
       });
   } catch (error) {
@@ -196,28 +196,40 @@ export const getApproveDoctors = async (req, res) => {
 };
 
 
-
 export const makeAppointment = async (req, res) => {
   try {
-     req.body.status = "pending";
-     const needAppointment = await appointmentModel(req.body);
-     await needAppointment.save();
-     const user = await userSchema.findOne({ _id: req.body.doctorInfo.userId });
-     user.unseenNotifications.push({
-       type: "new appointment-request-from-patient",
-       message: `${req.body.userInfo.name} wants to book an appointment with you`,
-       onclickPath: "/appointments",
-    })
-         
-      await user.save();
+    console.log("Appointment Request Body:", req.body);
 
-     res.status(200).json({
-       success: true,
-       msg: "Appointment booked successfully",
-       data: needAppointment,
-     });
+    // Convert date to ISO format preserving the local time in UTC
+    req.body.date = moment(req.body.date, "DD-MM-YYYY").toISOString();
+
+    req.body.status = "pending";
+    
+    if (!moment(req.body.date).isValid()) {
+      console.log("Invalid date format");
+    }
+    if (!moment(req.body.time).isValid()) {
+      console.log("Invalid time format");
+    }
+
+    const needAppointment = new appointmentModel(req.body);
+    await needAppointment.save();
+
+    const user = await userSchema.findOne({ _id: req.body.doctorInfo.userId });
+    user.unseenNotifications.push({
+      type: "new appointment-request-from-patient",
+      message: `${req.body.userInfo.name} wants to book an appointment with you`,
+      onclickPath: "/doctor/appointments",
+    });
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      msg: "Appointment booked successfully",
+      data: needAppointment,
+    });
   } catch (error) {
-    console.error("Error getting appointment: ", error);
+    console.error("Error getting appointment:", error);
     return res.status(500).json({
       msg: "Error getting appointment",
       success: false,
@@ -227,3 +239,84 @@ export const makeAppointment = async (req, res) => {
 };
 
 
+export const checkBookingAvailability = async (req, res) => {
+  try {
+    // Validate the required fields
+    if (!req.body.date || !req.body.time || !req.body.doctorId) {
+      return res.status(400).json({
+        success: false,
+        msg: "Missing required fields: date, time, or doctorId"
+      });
+    }
+
+    // Convert date to ISO format preserving the local time in UTC
+    const date = moment(req.body.date, "DD-MM-YYYY").toISOString();
+    const time = moment(req.body.time).toISOString();
+
+    console.log("Parsed Date (ISO):", date);
+    console.log("Parsed Time (ISO):", time);
+
+    const fromTime = moment(time).subtract(60, "minutes").toISOString();
+    console.log("From Time (ISO):", fromTime);
+
+    const toTime = moment(time).add(60, "minutes").toISOString();
+    console.log("To Time (ISO):", toTime);
+
+    const doctorId = req.body.doctorId;
+    console.log("Doctor ID:", doctorId);
+
+    // Query the database
+    const appointment = await appointmentModel.find({
+      doctorId,
+      date: {
+        $gte: moment(fromTime).startOf('day').toISOString(),
+        $lte: moment(toTime).endOf('day').toISOString()
+      },
+      time: { $gte: fromTime, $lte: toTime }
+    });
+
+    console.log("Found Appointments:", appointment);
+
+    if (appointment?.length > 0) {
+      return res.status(200).json({
+        success: false,
+        msg: "Appointment not available",
+      });
+    } else {
+      return res.status(200).json({
+        success: true,
+        msg: "Appointment is available",
+      });
+    }
+  } catch (error) {
+    console.error("Error getting appointment:", error);
+    return res.status(500).json({
+      msg: "Error getting appointment",
+      success: false,
+      error: error.message || error
+    });
+  }
+};
+
+
+export const getAppointmentsByUserId = async (req, res) => {
+  try {
+    const appointments = await appointmentModel.find({userId :req.body.userId });
+    if (!appointments|| appointments.length === 0) {
+      return res.status(404).json({ msg: "No approved appointmentss found", success: false });
+    } else {
+      res.status(200).json({
+        success: true,
+        msg: "Appointmnets fetched successfully",
+        data: appointments,
+      });
+    }
+  } catch (error) {
+    console.error("Error getting appointments info: ", error);
+    return res.status(500).json({
+      msg: "Error getting appointments info",
+      success: false,
+      error: error.message || error
+    });
+  }
+};
