@@ -76,7 +76,7 @@ function Login() {
           <img src={loginImg} alt="Album" className="mt-3 ml-36 w-96 h-96 " />
 
           <div className="text-black text-center pt-14 pl-36 space-y-4">
-            <div className="flex flex-col justify-center space-y-6 bg-slate-100 py-12 px-10 w-96 rounded-md">
+            <div className="flex flex-col justify-center space-y-6 bg-slate-100 py-12 px-10 w-96 rounded-md shadow-md">
               <input
                 onChange={handleChange}
                 type="email"

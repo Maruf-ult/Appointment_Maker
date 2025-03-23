@@ -71,7 +71,7 @@ function Register() {
           <img src={loginImg} alt="Album" className="mt-3 ml-36 w-96 h-96 " />
 
           <div className="text-black text-center pt-10 pl-36 space-y-4">
-            <form className="flex flex-col justify-center space-y-4 bg-slate-100 py-12 px-10 w-96 rounded-md">
+            <form className="flex flex-col justify-center space-y-4 bg-slate-100 py-12 px-10 w-96 rounded-md shadow-md">
               <input
             
                 onChange={handleChange}
