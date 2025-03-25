@@ -18,20 +18,20 @@ function Home() {
         <div className="flex justify-start pl-20 pt-3 space-x-96 pb-2">
           <h1 className="font-semibold text-2xl text-black">Medcare</h1>
           <ul className="flex justify-end pl-48 space-x-6 text-black">
-            <li className="cursor-pointer">
-              <a href="#home">Home</a>
+            <li className="cursor-pointer text-green-500">
+              <a href="#home">Home </a>
             </li>
-            <li className="cursor-pointer">
+            <li className="cursor-pointer hover:bg-emerald-500 rounded-sm ">
               <a href="#services">Services</a>
             </li>
-            <li className="cursor-pointer">
+            <li className="cursor-pointer  hover:bg-emerald-500 rounded-sm">
               <a href="#about">About</a>
             </li>
-            <li className="cursor-pointer">
+            <li className="cursor-pointer  hover:bg-emerald-500 rounded-sm">
               <a href="#doctors">Doctors</a>
             </li>
 
-            <li onClick={nav1} className="cursor-pointer">
+            <li onClick={nav1} className="cursor-pointer  hover:bg-emerald-500 rounded-sm">
               Join as client
             </li>
           </ul>
@@ -90,35 +90,35 @@ function Home() {
             </p>
           </div>
           <div className="card   m-10  shadow-2xl text-black bg-slate-200 cursor-pointer w-72  p-10">
-            <h1 className="card-title">Maruf Hossain</h1>
+            <h1 className="card-title">Rafsan Ahammad</h1>
             <hr className="border mt-4 border-black" />
             <p className="mt-3 pl-1 ">
-              <b>Phone No.:01733452207</b>
+              <b>Phone No.:01733452307</b>
             </p>
             <p className="mt-3 pr-16">
               <b>Address: Savar</b>
             </p>
             <p className="mt-3 pr-12">
-              <b>Fee per Visit: 500</b>
+              <b>Fee per Visit: 5000</b>
             </p>
             <p className="mt-3 pr-7">
-              <b>Timings: 12:00-1.00</b>
+              <b>Timings: 10:00-12.00</b>
             </p>
           </div>
           <div className="card   m-10  shadow-2xl text-black bg-slate-200 cursor-pointer w-72  p-10">
-            <h1 className="card-title">Maruf Hossain</h1>
+            <h1 className="card-title">Faruk Hossain</h1>
             <hr className="border mt-4 border-black" />
             <p className="mt-3 pl-1 ">
-              <b>Phone No.:01733452207</b>
+              <b>Phone No.:01933352207</b>
             </p>
             <p className="mt-3 pr-16">
-              <b>Address: Savar</b>
+              <b>Address: Noakhali</b>
             </p>
             <p className="mt-3 pr-12">
-              <b>Fee per Visit: 500</b>
+              <b>Fee per Visit: 1500</b>
             </p>
             <p className="mt-3 pr-7">
-              <b>Timings: 12:00-1.00</b>
+              <b>Timings: 1:00-3.00</b>
             </p>
           </div>
         </div>

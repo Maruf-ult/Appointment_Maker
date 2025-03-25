@@ -21,7 +21,6 @@ function Layout({ children }) {
     { name: 'Home', link: '/home', icon: faHouse },
     { name: 'Appointments', path: '/appointments', icon: faCalendarCheck },
     { name: 'Apply Doctor', link: '/apply-doc', icon: faUserDoctor },
-    { name: 'Profile', path: '/profile', icon: faUser }
   ];
 
   const adminMenu = [
@@ -72,8 +71,15 @@ function Layout({ children }) {
   }, [getData]); 
 
   const logOut = () => {
+  
+    const confirmLogout = window.confirm("Do you really want to log out?");
+  
+  if (confirmLogout) {
     localStorage.clear();
-    navigate('/login');
+    navigate("/");
+  } else {
+    console.log("Logout canceled");
+  }
   };
 
   if (!user) {
@@ -93,12 +99,12 @@ function Layout({ children }) {
             <ul className="space-y-8 ml-5 text-white">
               {menuToBeRendered.map((item, index) => (
                 <li key={index} className="font-bold">
-                  <Link to={item.link || item.path} className="cursor-pointer hover:text-green-400 flex items-center">
+                  <Link to={item.link || item.path} className="cursor-pointer hover:text-green-500 flex items-center">
                     <FontAwesomeIcon icon={item.icon} className="mr-2" /> {item.name}
                   </Link>
                 </li>
               ))}
-              <li className="font-bold cursor-pointer hover:text-green-400" onClick={logOut}>
+              <li className="font-bold cursor-pointer hover:text-red-400" onClick={logOut}>
                 <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" /> Logout
               </li>
             </ul>
@@ -110,7 +116,7 @@ function Layout({ children }) {
             <Badge onClick={nav1} className="mr-3 " count={user?.unseenNotifications?.length || 0} showZero>
               <FontAwesomeIcon icon={faUser} className="mr-2 mt-1 size-5" />
             </Badge>
-            <p className="hover:text-green-400">{user.name || 'Guest'}</p>
+            <p className="hover:text-green-500">{user.name || 'Guest'}</p>
           </div>
           <div className="bg-slate-50 mr-3 ml-3 mt-5 h-[78vh] rounded-md">
             {children || <div>No content available</div>}
