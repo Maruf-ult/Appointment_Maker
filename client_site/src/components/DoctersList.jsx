@@ -15,7 +15,7 @@ function DoctersList() {
     try {
       dispatch(showLoading());
       const response = await axios.get(
-        "http://localhost:3000/api/get-all-docs",
+        "https://appointment-maker-b7x7.onrender.com/api/get-all-docs",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -38,7 +38,7 @@ function DoctersList() {
     try {
       dispatch(showLoading());
       const response = await axios.post(
-        "http://localhost:3000/api/change-doc-status",
+        "https://appointment-maker-b7x7.onrender.com/api/change-doc-status",
         { doctorId: record._id, userId: record.userId, status: status },
         {
           headers: {

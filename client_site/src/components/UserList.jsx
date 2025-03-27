@@ -13,7 +13,7 @@ function UserList() {
     try {
       dispatch(showLoading());
       const response = await axios.get(
-        "http://localhost:3000/api/get-all-users",
+        "https://appointment-maker-b7x7.onrender.com/api/get-all-users",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

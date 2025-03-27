@@ -22,7 +22,7 @@ function BookAppointment() {
     try {
       dispatch(showLoading());
       const response = await axios.post(
-        "http://localhost:3000/api/get-doctor-info-by-id",
+        "https://appointment-maker-b7x7.onrender.com/api/get-doctor-info-by-id",
         {
           doctorId: params.doctorId,
         },
@@ -77,7 +77,7 @@ function BookAppointment() {
       console.log("Formatted Time (ISO):", isoTime);
 
       const response = await axios.post(
-        "http://localhost:3000/api/book-appointment",
+        "https://appointment-maker-b7x7.onrender.com/api/book-appointment",
         {
           doctorId: params.doctorId,
           userId: user._id,
@@ -133,7 +133,7 @@ function BookAppointment() {
       console.log("Formatted Time (ISO):", isoTime);
 
       const response = await axios.post(
-        "http://localhost:3000/api/check-booking-availability",
+        "https://appointment-maker-b7x7.onrender.com/api/check-booking-availability",
         {
           doctorId: params.doctorId,
           date: formattedDate,

@@ -64,7 +64,7 @@ function ApplyDoc() {
     try {
       dispatch(showLoading());
       const response = await axios.post(
-        "http://localhost:3000/api/apply-doc",
+        "https://appointment-maker-b7x7.onrender.com/api/apply-doc",
         {
           ...formValues,
           userId: user._id,

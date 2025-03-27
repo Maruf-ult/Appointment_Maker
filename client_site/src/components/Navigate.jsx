@@ -19,7 +19,7 @@ function Navigate() {
     try {
       dispatch(showLoading());
       const response = await axios.post(
-        "http://localhost:3000/api/mark-all-notif-as-seen",
+        "https://appointment-maker-b7x7.onrender.com/api/mark-all-notif-as-seen",
         { userId: user._id },
         {
           headers: {
@@ -44,7 +44,7 @@ function Navigate() {
     try {
       dispatch(showLoading());
       const response = await axios.post(
-        "http://localhost:3000/api/delete-all-notif",
+        "https://appointment-maker-b7x7.onrender.com/api/delete-all-notif",
         { userId: user._id },
         {
           headers: {

@@ -44,7 +44,7 @@ function Layout({ children }) {
       if (!token) throw new Error('No token found');
 
       const response = await axios.post(
-        "http://localhost:3000/api/get-userid",
+        "https://appointment-maker-b7x7.onrender.com/api/get-userid",
         {},
         {
           headers: {

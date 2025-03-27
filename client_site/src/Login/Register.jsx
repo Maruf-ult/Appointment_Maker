@@ -35,16 +35,21 @@ function Register() {
   const register = async () => {
     try {
       dispatch(showLoading()); 
-      const response = await axios.post("http://localhost:3000/api/reg", data);
+      const response = await axios.post("https://appointment-maker-b7x7.onrender.com/api/reg", data);
       dispatch(hideLoading());
       console.log(response.data);
       toast.success('Registration successful!');
       setData({ name: "", email: "", password: "" });
-         nav1(); // Clear the form after successful registration
+         nav1(); 
     } catch (error) {
       dispatch(hideLoading());
       console.log('Error during registration:', error);
-      toast.error('Registration failed.')
+      if (error.response && error.response.data.errors) {
+        error.response.data.errors.forEach((err) => {
+          toast.error(err.msg); 
+        });
+      }else
+      toast.error(`An unexpected error occured., ${error}`);
     }
   };
 

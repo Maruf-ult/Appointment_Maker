@@ -14,7 +14,7 @@ function HomePage() {
        const getData = async () => {
     try {
      dispatch(showLoading());
-      const response = await axios.get("http://localhost:3000/api/get-all-approved-doctors", {
+      const response = await axios.get("https://appointment-maker-b7x7.onrender.com/api/get-all-approved-doctors", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

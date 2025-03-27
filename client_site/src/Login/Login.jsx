@@ -40,7 +40,7 @@ function Login() {
   const login = async () => {
     try {
       dispatch(showLoading());
-      const response = await axios.post("http://localhost:3000/api/login", data);
+      const response = await axios.post("https://appointment-maker-b7x7.onrender.com/api/login", data);
       dispatch(hideLoading());
       console.log(response.data);
       if (response.data.success) {
