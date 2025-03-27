@@ -1,6 +1,6 @@
 import express from "express";
 import { validate,signUpValidation,loginValidation } from "../validation/errorHandling.js";
-import { singup,login, userInfo,applyDoc,seenNotifications,deleteNotifications, getAppointmentsByUserId } from "../modules/userModule.js";
+import { signup,login, userInfo,applyDoc,seenNotifications,deleteNotifications, getAppointmentsByUserId } from "../modules/userModule.js";
 import { getUsers,getDoctors,chngDocUsers } from "../modules/adminModule.js";
 import { chngAppointmentStatus, doctorInfo, getAppointmentsByDoctorId } from "../modules/doctorModule.js";
 import { authMiddleware } from "../middlewares/middleware.js";
@@ -12,7 +12,7 @@ import { checkBookingAvailability } from "../modules/userModule.js";
 
 const router = express.Router();
 
-router.post("/reg",signUpValidation,validate,singup);
+router.post("/reg",signUpValidation,validate,signup);
 router.post("/login",loginValidation,validate,login);
 router.post("/get-userid",authMiddleware,userInfo);
 router.post("/apply-doc",authMiddleware,applyDoc);

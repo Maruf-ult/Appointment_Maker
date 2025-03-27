@@ -7,61 +7,136 @@ import moment from "moment";
 
 
 
+// export const signup = async (req, res) => {
+//   try {
+//     const { name, email, password } = req.body;
+//     const user = await userSchema.findOne({ email });
+//     if (user) {
+//       return res
+//         .status(409)
+//         .json({ msg: "user already exists", success: false });
+//     }
 
-export const singup = async (req, res) => {
+//     const userModel = new userSchema({ name, email, password });
+//     userModel.password = await bcrypt.hash(password, 10);
+//     await userModel.save();
+//     res
+//       .status(201)
+//       .json({ msg: "account created successfully", success: true, userModel });
+//   } catch (error) {
+//     return res.status(500).json({ msg: `an internal error occurred ${error}` });
+//   }
+// };
+
+export const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    const user = await userSchema.findOne({ email });
-    if (user) {
-      return res
-        .status(409)
-        .json({ msg: "user already exists", success: false });
+
+    // Validate inputs
+    if (!name || !email || !password) {
+      return res.status(400).json({ msg: "All fields are required", success: false });
     }
 
-    const userModel = new userSchema({ name, email, password });
-    userModel.password = await bcrypt.hash(password, 10);
-    await userModel.save();
-    res
-      .status(201)
-      .json({ msg: "account created successfully", success: true, userModel });
+    // Check if user already exists
+    const user = await userSchema.findOne({ email });
+    if (user) {
+      return res.status(409).json({ msg: "User already exists", success: false });
+    }
+
+    // Hash password and create user
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new userSchema({ name, email, password: hashedPassword });
+    await newUser.save();
+
+    // Exclude sensitive data (e.g., password) in response
+    const { password: _, ...userData } = newUser._doc;
+    res.status(201).json({ msg: "Account created successfully", success: true, userData });
   } catch (error) {
-    return res.status(500).json({ msg: `an internal error occurred ${error}` });
+    console.error("Signup Error:", error); // Log error for debugging
+    return res.status(500).json({ msg: "An internal error occurred", success: false });
   }
 };
+
+
+
+
+
+
+// export const login = async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//     const user = await userSchema.findOne({ email });
+//     if (!user) {
+//       return res.status(403).json({ msg: "user not found", success: false });
+//     }
+
+//     const isPassEql = await bcrypt.compare(password, user.password);
+//     if (!isPassEql) {
+//       return res
+//         .status(403)
+//         .json({ msg: "email or password is wrong ", success: false });
+//     }
+
+//     const jwtToken = jwt.sign(
+//       { email: user.email, _id: user._id },
+//       process.env.JWT_SECRET,
+//       { expiresIn: "24h" }
+//     );
+
+//     res.status(201).json({
+//       msg: "logged in successfully",
+//       success: true,
+//       jwtToken,
+//       email,
+//       name: user.name,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({ msg: `an internal error occurred ${error}` });
+//   }
+// };
+
 
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    // Validate inputs
+    if (!email || !password) {
+      return res.status(400).json({ msg: "Email and password are required", success: false });
+    }
+
+    // Find user by email
     const user = await userSchema.findOne({ email });
     if (!user) {
-      return res.status(403).json({ msg: "user not found", success: false });
+      return res.status(404).json({ msg: "User not found", success: false });
     }
 
-    const isPassEql = await bcrypt.compare(password, user.password);
-    if (!isPassEql) {
-      return res
-        .status(403)
-        .json({ msg: "email or password is wrong ", success: false });
+    // Compare provided password with stored hashed password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ msg: "Invalid email or password", success: false });
     }
 
+    // Generate JWT token
     const jwtToken = jwt.sign(
       { email: user.email, _id: user._id },
       process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );
 
-    res.status(201).json({
-      msg: "logged in successfully",
+    // Respond with token and user data
+    const { password: _, ...userData } = user._doc; // Exclude password
+    res.status(200).json({
+      msg: "Logged in successfully",
       success: true,
       jwtToken,
-      email,
-      name: user.name,
+      userData,
     });
   } catch (error) {
-    return res.status(500).json({ msg: `an internal error occurred ${error}` });
+    console.error("Login Error:", error); // Log error for debugging
+    return res.status(500).json({ msg: "An internal error occurred", success: false });
   }
 };
-
 export const userInfo = async (req, res) => {
   try {
     const user = await userSchema.findOne({ _id: req.body.userId });
@@ -170,7 +245,6 @@ export const deleteNotifications = async (req, res) => {
       .json({ msg: `An internal error occurred: ${error.message}` });
   }
 };
-
 
 
 export const getApproveDoctors = async (req, res) => {

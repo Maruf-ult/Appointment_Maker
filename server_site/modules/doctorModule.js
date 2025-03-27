@@ -18,7 +18,7 @@ export const doctorInfo = async (req, res) => {
    };
    
 
-// controllers/doctorController.js
+
 
 export const updateDoctorInfo = async (req, res) => {
   try {
