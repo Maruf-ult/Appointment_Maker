@@ -89,7 +89,7 @@ function Layout({ children }) {
   return (
     <>
       <div className="h-screen w-screen bg-slate-300 flex">
-        <div className="h-[92vh] w-48 bg-slate-500 ml-6 mt-4 rounded-md">
+        <div className="h-[94vh] w-48 bg-slate-500 ml-6 mt-4 rounded-md">
           <div className="flex flex-col space-y-11">
             <h1 className="text-3xl font-bold ml-3 mt-2 text-black">
               SH <br /> <span className="text-2xl font-normal">

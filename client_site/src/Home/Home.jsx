@@ -46,7 +46,7 @@ function Home() {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo, ipsa
             repellat eius, fuga esse deleniti quidem commodi blanditiis.
           </p>
-          <div className="flex space-x-3 ml-3">
+          <div className="flex space-x-3 ml-7">
             <button className="btn btn-outline btn-success px-8 text-xl">
               Contact Us
             </button>
@@ -72,7 +72,7 @@ function Home() {
       <div id="doctors" className="h-screen bg-slate-300 text-center pt-28 ">
         <h1 className="font-bold text-4xl">Meet Our Doctors</h1>
         <p>Highly skilled professionals ready to serve you.</p>
-        <div className="flex  gap-x-4 ml-40 mr-14">
+        <div className="flex  gap-x-4 ml-40 mr-16">
           <div className="card   m-10  shadow-2xl text-black bg-slate-200 cursor-pointer w-72  p-10">
             <h1 className="card-title">Maruf Hossain</h1>
             <hr className="border mt-4 border-black" />
