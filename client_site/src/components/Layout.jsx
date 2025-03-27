@@ -118,7 +118,7 @@ function Layout({ children }) {
             </Badge>
             <p className="hover:text-green-500">{user.name || 'Guest'}</p>
           </div>
-          <div className="bg-slate-50 mr-3 ml-3 mt-5 h-[78vh] rounded-md">
+          <div className="bg-slate-50 mr-3 ml-3 mt-5 h-[82vh] rounded-md">
             {children || <div>No content available</div>}
           </div>
         </div>

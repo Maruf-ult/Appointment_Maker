@@ -72,7 +72,7 @@ function Login() {
         </div>
 
         {/* Title and content section */}
-        <div className="flex ml-5">
+        <div className="flex ml-16">
           <img src={loginImg} alt="Album" className="mt-3 ml-36 w-96 h-96 " />
 
           <div className="text-black text-center pt-14 pl-36 space-y-4">
