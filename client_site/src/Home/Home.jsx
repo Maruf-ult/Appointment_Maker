@@ -46,7 +46,7 @@ function Home() {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo, ipsa
             repellat eius, fuga esse deleniti quidem commodi blanditiis.
           </p>
-          <div className="flex space-x-3 ml-16">
+          <div className="flex space-x-3 ml-20">
             <button className="btn btn-outline btn-success px-8 text-xl">
               Contact Us
             </button>
@@ -58,8 +58,8 @@ function Home() {
       </div>
 
       <div id="about" className="h-screen bg-emerald-100 text-center pt-36">
-        <h1 className="font-bold text-4xl">About Us</h1>
-        <p className="font-semibold mt-3">Learn more about Medcare and its mission to keep you healthy.</p>
+        <h1 className="font-bold text-5xl">About Us</h1>
+        <p className="font-semibold mt-3 text-xl">Learn more about Medcare and its mission to keep you healthy.</p>
         <p className="text-lg mt-4 px-12 pt-5">
     At Medcare, we believe that health is not just the absence of illness but a
     state of physical, mental, and emotional well-being. Founded with the
@@ -70,8 +70,8 @@ function Home() {
       </div>
 
       <div id="doctors" className="h-screen bg-slate-300 text-center pt-28 ">
-        <h1 className="font-bold text-4xl">Meet Our Doctors</h1>
-        <p>Highly skilled professionals ready to serve you.</p>
+        <h1 className="font-bold text-5xl">Meet Our Doctors</h1>
+        <p className="text-xl">Highly skilled professionals ready to serve you.</p>
         <div className="flex  gap-x-4 ml-40 mr-14">
           <div className="card   m-10  shadow-2xl text-black bg-slate-200 cursor-pointer w-72  p-10">
             <h1 className="card-title">Maruf Hossain</h1>
@@ -112,7 +112,7 @@ function Home() {
               <b>Phone No.:01933352207</b>
             </p>
             <p className="mt-3 pr-16">
-              <b>Address: Noakhali</b>
+              <b>Address: savar</b>
             </p>
             <p className="mt-3 pr-12">
               <b>Fee per Visit: 1500</b>
@@ -125,8 +125,8 @@ function Home() {
       </div>
 
       <div id="services" className="h-screen  bg-emerald-100 text-center pt-36">
-        <h1 className="font-bold text-4xl">Our Services</h1>
-        <p>Explore the variety of services we provide to our clients.</p>
+        <h1 className="font-bold text-5xl">Our Services</h1>
+        <p className="text-xl">Explore the variety of services we provide to our clients.</p>
       </div>
     </>
   );
