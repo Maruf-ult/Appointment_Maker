@@ -27,7 +27,7 @@ function Layout({ children }) {
     { name: 'Home', link: '/home', icon: faHouse },
     { name: 'Doctors', path: '/doctors', icon: faStethoscope },
     { name: 'Users', path: '/users', icon: faUsers },
-    { name: 'Profile', link: '/profile', icon: faUserDoctor }
+    // { name: 'Profile', link: '/profile', icon: faUserDoctor }
   ];
 
   const doctorMenu = [
