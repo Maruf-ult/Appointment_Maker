@@ -6,7 +6,7 @@ function Doctors({ doctor }) {
 
   return (
     <div
-      className="card p-4 m-5 shadow-2xl text-black bg-slate-300 cursor-pointer"
+      className="card p-4 m-5 shadow-xl text-black bg-slate-400 cursor-pointer py-7"
       onClick={() => navigate(`/book-appointment/${doctor._id}`)}
     >
       <h1 className="card-title">

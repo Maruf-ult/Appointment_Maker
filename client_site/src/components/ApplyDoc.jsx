@@ -13,6 +13,7 @@ function ApplyDoc() {
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
+  // State for form values
   const [formValues, setFormValues] = useState({
     firstName: "",
     lastName: "",
@@ -25,6 +26,7 @@ function ApplyDoc() {
     timings: [],
   });
 
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormValues((prevValues) => ({
@@ -33,25 +35,23 @@ function ApplyDoc() {
     }));
   };
 
+ 
   const handleTimingsChange = (value) => {
-    console.log("Selected Timings:", value);
-
-    if (
-      value &&
-      value.length === 2 &&
-      moment(value[0]).isValid() &&
-      moment(value[1]).isValid()
-    ) {
+    console.log("Selected Timings:", value); 
+  
+    if (value && value.length === 2 && value[0].$d && value[1].$d) {
       const formattedTimings = [
-        value[0].format("HH:mm"),
-        value[1].format("HH:mm"),
+        moment(value[0].$d).format("HH:mm"),
+        moment(value[1].$d).format("HH:mm"),
       ];
       console.log("Formatted Timings:", formattedTimings);
+  
       setFormValues((prevValues) => ({
         ...prevValues,
         timings: formattedTimings,
       }));
     } else {
+      toast.error("Invalid timings selected. Please try again.");
       setFormValues((prevValues) => ({
         ...prevValues,
         timings: [],
@@ -61,6 +61,13 @@ function ApplyDoc() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validation for timings
+    if (!formValues.timings || formValues.timings.length !== 2) {
+      toast.error("Please select valid timings.");
+      return;
+    }
+
     try {
       dispatch(showLoading());
       const response = await axios.post(
@@ -68,11 +75,6 @@ function ApplyDoc() {
         {
           ...formValues,
           userId: user._id,
-          // Additional property example
-          timings: [
-            moment(formValues.timings[0], "HH:mm"),
-            moment(formValues.timings[1], "HH:mm"),
-          ],
         },
         {
           headers: {
@@ -81,6 +83,7 @@ function ApplyDoc() {
         }
       );
       dispatch(hideLoading());
+
       if (response.data.success) {
         toast.success(response.data.msg);
         navigate("/home");
@@ -89,6 +92,7 @@ function ApplyDoc() {
       }
     } catch (error) {
       dispatch(hideLoading());
+
       if (error.response) {
         toast.error(`Server Error: ${error.response.data.message}`);
         console.error("Error Response:", error.response.data);

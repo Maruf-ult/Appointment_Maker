@@ -25,7 +25,7 @@ function Layout({ children }) {
 
   const adminMenu = [
     { name: 'Home', link: '/home', icon: faHouse },
-    { name: 'Doctors', path: '/docs', icon: faStethoscope },
+    { name: 'Doctors', path: '/doctors', icon: faStethoscope },
     { name: 'Users', path: '/users', icon: faUsers },
     { name: 'Profile', link: '/profile', icon: faUserDoctor }
   ];
