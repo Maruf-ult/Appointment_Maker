@@ -70,8 +70,12 @@ export const getAppointmentsByDoctorId = async (req, res) => {
     if (!doctor || doctor.length === 0) {
       return res.status(404).json({ msg: "Doctor not found", success: false });
     }
-
-    const appointments = await appointmentModel.find({ doctorId: doctor[0]._id });
+    console.log("Doctor ID being searched in appointments:", doctor[0]._id);
+    const appointment = await appointmentModel.find()
+    console.log(appointment)
+    const appointments = await appointmentModel.find({ doctorId: doctor[0]._id.toString() });
+        
+  
     if (!appointments || appointments.length === 0) {
       return res.status(404).json({ msg: "No appointments found", success: false });
     }
