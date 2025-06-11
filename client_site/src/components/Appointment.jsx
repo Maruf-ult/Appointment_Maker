@@ -30,7 +30,7 @@ function Appointment() {
               console.log(response.data.data);
             }
           } catch (error) {
-            toast.error(error.response ? error.response.data.msg : error.msg);
+            // toast.error(error.response ? error.response.data.msg : error.msg);
             dispatch(hideLoading());
             console.log(error);
           }

@@ -108,7 +108,7 @@ function ApplyDoc() {
 
   return (
     <Layout>
-      <h1 className="font-semibold text-black pl-3 pt-1">
+      <h1 className="font-semibold text-black pl-3 ">
         Apply Doctor Account
       </h1>
       <DoctorForm
