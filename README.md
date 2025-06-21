@@ -23,7 +23,6 @@ https://appointment-maker-1.onrender.com
 - **Redux Toolkit** – State management  
 - **JWT & bcrypt.js** – Authentication and encryption  
 - **Mongoose** – Database ORM  
-- **Nodemailer** – Email notification system  
 - **React Router** – Frontend navigation
 
 ## ⚙️ Installation
@@ -58,8 +57,6 @@ https://appointment-maker-1.onrender.com
      ```
          MONGO_URI=your_mongo_connection
          JWT_SECRET=your_jwt_secret
-         SMTP_EMAIL=your_email@example.com
-         SMTP_PASS=your_email_password
      ```
 
 6. Run the backend application:
