@@ -1,29 +1,85 @@
+# 🩺 Appointment Maker
 
-
-# Doc Appointment Maker
-
-# Live link  
+## 🔗 Live Link  
 https://appointment-maker-1.onrender.com
 
-## Description  
-Doc Appointment Maker is a MERN stack application that streamlines the process of booking and managing doctor appointments. Patients can register, browse available doctors, schedule appointments, and receive notifications. Doctors can manage their availability and appointments efficiently.
+## 📌 Description  
+**Appointment Maker** is a full-featured MERN stack web application designed to streamline the process of **booking and managing doctor appointments**. Patients can register, explore available doctors, book appointments, and receive email notifications. Doctors have access to a personal dashboard to update availability, manage patient bookings, and communicate effectively. An integrated **Admin Panel** handles authentication for doctors and provides tools to manage users and appointments — all wrapped in a **secure, responsive, and role-based** system.
 
-## Features  
-- **User Authentication**: Secure registration and login for both patients and doctors  
-- **Browse Doctors**: View doctor profiles, specialties, and availability  
-- **Book Appointments**: Schedule appointments with preferred doctors  
-- **Appointment Management**: Cancel or reschedule booked appointments  
-- **Real-time Notifications**: Receive appointment confirmations and reminders  
-- **Doctor Dashboard**: Doctors can manage their schedules and appointments  
+## ✨ Features  
+- 🧑‍⚕️ Patients can register, log in, browse doctors, and schedule appointments  
+- 📅 Doctors can set availability, view appointments, and manage patients  
+- 🛡️ Role-based access for patients, doctors, and admins  
+- 📧 Notifications sent to users for appointment booking and status updates  
+- 🛠️ Admin dashboard to verify doctors and manage users  
+- 🔐 JWT-based authentication and Redux Toolkit for state management  
+- 📱 Responsive and user-friendly UI
 
-## Technologies Used  
-- **Express.js**: Backend framework  
-- **React.js**: Frontend library  
-- **Node.js**: Backend runtime environment  
-- **MongoDB**: Database to store user and appointment data  
+## 🛠️ Technologies Used  
+- **React.js** – Frontend library  
+- **Node.js** – Backend runtime  
+- **Express.js** – RESTful API framework  
+- **MongoDB** – NoSQL database  
+- **Redux Toolkit** – State management  
+- **JWT & bcrypt.js** – Authentication and encryption  
+- **Mongoose** – Database ORM  
+- **Nodemailer** – Email notification system  
+- **React Router** – Frontend navigation
 
-## Installation  
+## ⚙️ Installation
 
-### Clone the repository  
-```bash
-git clone https://github.com/Maruf-ult/doc-appointment-maker.git  
+1. **Clone the repository**  
+   ```
+   git clone https://github.com/Maruf-ult/Appointment_Maker
+   ```
+   
+2. Open the terminal in the repository folder:
+ 
+   ```
+   cd Appointment_Maker
+    ```
+
+3. Install backend dependencies:
+
+   ```
+   cd server_site
+   npm install
+    ```
+
+4. Install frontend dependencies:
+   
+   ```
+   cd client_site
+   npm install
+     ```
+5. Configure environment variables
+     Create a .env file in the server directory with the following:
+   
+     ```
+         MONGO_URI=your_mongo_connection
+         JWT_SECRET=your_jwt_secret
+         SMTP_EMAIL=your_email@example.com
+         SMTP_PASS=your_email_password
+     ```
+
+6. Run the backend application:
+   
+   ```
+   cd server_site
+   npm start
+   ```
+   
+7. Run the frontend application:
+   
+   ```
+   cd client_site
+   npm run dev
+   ```   
+
+   
+Feel free to adapt this template to your project's specific requirements. Happy coding! 🚀
+
+: GitHub - Maruf-ult/Appointment_Maker
+
+
+   
